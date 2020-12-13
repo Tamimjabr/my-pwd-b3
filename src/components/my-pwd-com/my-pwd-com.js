@@ -30,10 +30,15 @@ template.innerHTML = `
       width: 100vw;
       height: 40px;
       background-color:  #c4b6b6;
+    } 
+    my-window-com{
+      position: absolute;
+    	top: 50px;
+	    left: 50px;
     }
-
   </style>
   <div id='desktop'>
+   <my-window-com></my-window-com>
    <div id='desktopBar'>
    <button id="memoryBtn">Memory</button>
    <button id="chattBtn"> Chatt</button>
@@ -60,7 +65,7 @@ customElements.define('my-pwd-com',
       // append the template to the shadow root.
       this.attachShadow({ mode: 'open' })
         .appendChild(template.content.cloneNode(true))
-      this.container = this.shadowRoot.querySelector('#desktop')
+      this.desktop = this.shadowRoot.querySelector('#desktop')
     }
 
     /**
@@ -87,7 +92,7 @@ customElements.define('my-pwd-com',
      * Called after the element is inserted into the DOM.
      */
     connectedCallback () {
-
+    
     }
 
     /**
