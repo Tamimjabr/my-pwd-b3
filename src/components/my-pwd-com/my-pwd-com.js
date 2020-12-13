@@ -65,7 +65,10 @@ customElements.define('my-pwd-com',
       // append the template to the shadow root.
       this.attachShadow({ mode: 'open' })
         .appendChild(template.content.cloneNode(true))
-      this.desktop = this.shadowRoot.querySelector('#desktop')
+      this._desktop = this.shadowRoot.querySelector('#desktop')
+      this._memoryBtn=this.shadowRoot.querySelector('#memoryBtn')
+      this._chattBtn=this.shadowRoot.querySelector('#chattBtn')
+      this._TicBtn=this.shadowRoot.querySelector('#TicBtn')
     }
 
     /**
@@ -92,7 +95,7 @@ customElements.define('my-pwd-com',
      * Called after the element is inserted into the DOM.
      */
     connectedCallback () {
-    
+      this._memoryBtn.addEventListener('click', this._memoryBtnClick.bind(this))
     }
 
     /**
@@ -100,6 +103,12 @@ customElements.define('my-pwd-com',
      */
     disconnectedCallback () {
 
+    }
+    _memoryBtnClick(){
+      const memory=document.createElement('my-memory-game')
+      const myWindow=document.createElement('my-window-com')
+      myWindow.appendChild(memory)
+      this._desktop.appendChild(myWindow)
     }
   }
 )

@@ -1,22 +1,5 @@
 body {
-	background: #ffffff;
 	margin: 0;
 	padding: 0;
-}
 
-#toolBar{
-	background-color: gray;
-	border: 1px solid balck;
-	border-radius: 5px;
-	display: flex;
-	flex-direction: row;
-	flex-wrap: nowrap;
-	justify-content: flex-end;
-	align-items: center;
-}
-
-#content{
-	display: flex;
-	justify-content: center;
-	align-items: center;
 }

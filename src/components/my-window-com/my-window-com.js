@@ -16,7 +16,7 @@ template.innerHTML = `
   height: 400px;
   border: 2px solid balck;
   border-radius: 5px;
-  background-color: white;
+  background-color: rgb(241, 202, 165);
   resize: both;
   overflow: auto;
 }
@@ -30,9 +30,9 @@ template.innerHTML = `
   align-items: center;
 }
 #content{
-	display: flex;
-	justify-content: center;
-	align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
 
