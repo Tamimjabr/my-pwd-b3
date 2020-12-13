@@ -45,7 +45,7 @@ template.innerHTML = `
    <div id='desktopBar'>
    <button id="memoryBtn">Memory</button>
    <button id="chattBtn"> Chatt</button>
-   <button id="TicBtn"> TicTacToc</button>
+   <button id="TicBtn"> TicTacToe</button>
    </div>
   </div>
 `
@@ -112,18 +112,27 @@ customElements.define('my-pwd-com',
       // todo remove eventlisteners
     }
     _memoryBtnClick(){
-      const memory=document.createElement('my-memory-game')
-      const myWindow=document.createElement('my-window-com')
-      myWindow.style.top=(this._top+10)+'px'
-      myWindow.style.left=(this._left+10)+'px'
-      myWindow.style.zIndex=this._topWindowZ
+      //todo let the 
+      
+      const myWindows =Array.from(this.shadowRoot.querySelectorAll('my-window-com')) 
+      console.log(myWindows.length)
+      // if there is no window in the desktop so start adding new ones from
+      if(myWindows.length===0){
+        this._top=50
+        this._left=50
+      }
+      const memory = document.createElement('my-memory-game')
+      const myWindow = document.createElement('my-window-com')
+      myWindow.style.top = (this._top+10)+'px'
+      myWindow.style.left = (this._left+10)+'px'
+      myWindow.style.zIndex = this._topWindowZ
       // todo to remove the event listner, maybe in my-window-com in disconnectedCallback
       myWindow.addEventListener('click',this._handleFocus.bind(this))
       myWindow.appendChild(memory)
       this._desktop.appendChild(myWindow)
       // increase the top and left for the next created window
       this._top=this._top+10
-      this._left=this._left+10
+      this._left=this._left+15
 
     }
     _handleFocus(event){
