@@ -5,6 +5,9 @@
  * @version 1.0.0
  */
 
+// Photo by César Couto on Unsplash
+const backgroundURL = (new URL('images/background.jpg', import.meta.url)).href
+
 /**
  * Define template.
  */
@@ -13,6 +16,9 @@ template.innerHTML = `
   <style>
     #desktop{
       background-color: #ffdd93;
+      background-image: url("${backgroundURL}");
+      background-repeat: no-repeat;
+      background-position: center center;
       height: 100vh;
       width:100vw;
       position: relative;
@@ -28,7 +34,11 @@ template.innerHTML = `
 
   </style>
   <div id='desktop'>
-   <div id='desktopBar'></div>
+   <div id='desktopBar'>
+   <button id="memoryBtn">Memory</button>
+   <button id="chattBtn"> Chatt</button>
+   <button id="TicBtn"> TicTacToc</button>
+   </div>
   </div>
 `
 
