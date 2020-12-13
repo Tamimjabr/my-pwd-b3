@@ -38,7 +38,7 @@ template.innerHTML = `
     }
   </style>
   <div id='desktop'>
-   <my-window-com></my-window-com>
+   <my-window-com><my-memory-game></my-memory-game></my-window-com>
    <div id='desktopBar'>
    <button id="memoryBtn">Memory</button>
    <button id="chattBtn"> Chatt</button>

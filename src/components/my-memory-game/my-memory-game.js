@@ -172,6 +172,7 @@ customElements.define('my-memory-game',
      */
     attributeChangedCallback (name, oldValue, newValue) {
       if (name === 'boardsize') {
+        this._attempts = 0
         this._init()
       }
     }
@@ -249,6 +250,7 @@ customElements.define('my-memory-game',
      * Initializes the game board size and tiles.
      */
     _init () {
+      this._attempts = 0
       const { width, height } = this._gameBoardSize
       // the number of the tiles ex. 4*4=16
       const tilesCount = width * height

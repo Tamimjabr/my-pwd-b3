@@ -23,14 +23,17 @@ template.innerHTML = `
 #toolBar{
   background-color: gray;
   border: 1px solid balck;
-  border-radius: 5px;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: flex-end;
   align-items: center;
 }
-
+#content{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
 </style>
 
 <div id="window">
@@ -40,7 +43,7 @@ template.innerHTML = `
    <button id="TicBtn">X</button>
   </div>
   <div id="content">
-    <h1>Here it is</h1>
+    <slot></slot>
   </div>
 </div>
 `
