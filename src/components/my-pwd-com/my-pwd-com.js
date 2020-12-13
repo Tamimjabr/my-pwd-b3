@@ -5,7 +5,7 @@
  * @version 1.0.0
  */
 
-// Photo by César Couto on Unsplash
+// Photo by RetroSupply on Unsplash
 const backgroundURL = (new URL('images/background.jpg', import.meta.url)).href
 
 /**
@@ -19,6 +19,7 @@ template.innerHTML = `
       background-image: url("${backgroundURL}");
       background-repeat: no-repeat;
       background-position: center center;
+      background-size:cover;
       height: 100vh;
       width:100vw;
       position: relative;
