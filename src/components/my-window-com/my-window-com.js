@@ -75,7 +75,6 @@ customElements.define(
       this.attachShadow({ mode: 'open' }).appendChild(
         template.content.cloneNode(true)
       )
-      this._topZIndex = 0
       this._closeBtn = this.shadowRoot.querySelector('#close')
       this._window = this.shadowRoot.querySelector('#window')
     }
@@ -86,7 +85,7 @@ customElements.define(
      * @returns {string[]} A string array of attributes to monitor.
      */
     static get observedAttributes () {
-      return ['z-index-number']
+      return []
     }
 
     /**
@@ -97,20 +96,13 @@ customElements.define(
      * @param {any} newValue the new attribute value.
      */
     attributeChangedCallback (name, oldValue, newValue) {
-      if (name === 'z-index-number') {
-        console.log(newValue)
-        this._topZIndex = Number(newValue) + 1
-        console.log('the new topZindex is', this._topZIndex)
-        this._handleFocus()
-      }
+
     }
 
     /**
      * Called after the element is inserted into the DOM.
      */
     connectedCallback () {
-      this.addEventListener('click', this._handleFocus)
-
       this._closeBtn.addEventListener('click', this._handleCloseBtn.bind(this))
     }
 
@@ -126,17 +118,6 @@ customElements.define(
      */
     _handleCloseBtn () {
       this.remove()
-    }
-
-    /**
-     * Handle changing the focus betweens windows.
-     */
-    _handleFocus () {
-    /* this.focus()
-      console.log(this)
-      const higherZ = this._topZIndex
-      this.style.zIndex = higherZ
-      this._topZIndex++ */
     }
   }
 )

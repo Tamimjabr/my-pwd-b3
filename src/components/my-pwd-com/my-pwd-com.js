@@ -73,7 +73,7 @@ customElements.define('my-pwd-com',
       this._chattBtn=this.shadowRoot.querySelector('#chattBtn')
       this._TicBtn=this.shadowRoot.querySelector('#TicBtn')
 
-      this._topWindowZ=1
+      this._topWindowZ=2
       this._top=50
       this._left=50
     }
@@ -114,26 +114,21 @@ customElements.define('my-pwd-com',
     _memoryBtnClick(){
       const memory=document.createElement('my-memory-game')
       const myWindow=document.createElement('my-window-com')
-      myWindow.setAttribute('z-index-number',this._topWindowZ)
       myWindow.style.top=(this._top+10)+'px'
       myWindow.style.left=(this._left+10)+'px'
-    
       myWindow.style.zIndex=this._topWindowZ
-      console.log('#############', this.style.top)
-
-      console.log('here is desktop1',this._topWindowZ)
-      this._topWindowZ++
-      console.log('here is desktop2',this._topWindowZ)
-      myWindow.addEventListener('click',this._handleFocus)
+      // todo to remove the event listner, maybe in my-window-com in disconnectedCallback
+      myWindow.addEventListener('click',this._handleFocus.bind(this))
       myWindow.appendChild(memory)
       this._desktop.appendChild(myWindow)
+      // increase the top and left for the next created window
       this._top=this._top+10
       this._left=this._left+10
 
     }
-    _handleFocus(){
- 
+    _handleFocus(event){
+      event.target.style.zIndex=this._topWindowZ
+      this._topWindowZ++
     }
-
   }
 )
