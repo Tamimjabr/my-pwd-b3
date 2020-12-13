@@ -11,15 +11,22 @@
 const template = document.createElement('template')
 template.innerHTML = `
 <style>
+  :host{
+    position: absolute; 
+  }
 #window{
-  width: 400px;
+  width: 500px;
   height: 400px;
   border: 2px solid balck;
   border-radius: 5px;
   background-color: rgb(241, 202, 165);
   resize: both;
   overflow: auto;
+  position: absolute; 
 }
+#window:focus{
+  background-color: gray;
+    }
 #toolBar{
   background-color: gray;
   border: 1px solid balck;
@@ -38,9 +45,9 @@ template.innerHTML = `
 
 <div id="window">
   <div id='toolBar'>
-  <button id="memoryBtn">-</button>
-   <button id="chattBtn">+</button>
-   <button id="TicBtn">X</button>
+  <button id="minimize">-</button>
+   <button id="fullscreenToggle">+</button>
+   <button id="close">X</button>
   </div>
   <div id="content">
     <slot></slot>
@@ -68,6 +75,9 @@ customElements.define(
       this.attachShadow({ mode: 'open' }).appendChild(
         template.content.cloneNode(true)
       )
+      this._topZIndex = 0
+      this._closeBtn = this.shadowRoot.querySelector('#close')
+      this._window = this.shadowRoot.querySelector('#window')
     }
 
     /**
@@ -76,7 +86,7 @@ customElements.define(
      * @returns {string[]} A string array of attributes to monitor.
      */
     static get observedAttributes () {
-      return []
+      return ['z-index-number']
     }
 
     /**
@@ -86,16 +96,47 @@ customElements.define(
      * @param {any} oldValue the old attribute value.
      * @param {any} newValue the new attribute value.
      */
-    attributeChangedCallback (name, oldValue, newValue) {}
+    attributeChangedCallback (name, oldValue, newValue) {
+      if (name === 'z-index-number') {
+        console.log(newValue)
+        this._topZIndex = Number(newValue) + 1
+        console.log('the new topZindex is', this._topZIndex)
+        this._handleFocus()
+      }
+    }
 
     /**
      * Called after the element is inserted into the DOM.
      */
-    connectedCallback () {}
+    connectedCallback () {
+      this.addEventListener('click', this._handleFocus)
+
+      this._closeBtn.addEventListener('click', this._handleCloseBtn.bind(this))
+    }
 
     /**
      * Called after the element has been removed from the DOM.
      */
-    disconnectedCallback () {}
+    disconnectedCallback () {
+      // todo remove eventlistener
+    }
+
+    /**
+     * Handle click on the close button.
+     */
+    _handleCloseBtn () {
+      this.remove()
+    }
+
+    /**
+     * Handle changing the focus betweens windows.
+     */
+    _handleFocus () {
+    /* this.focus()
+      console.log(this)
+      const higherZ = this._topZIndex
+      this.style.zIndex = higherZ
+      this._topZIndex++ */
+    }
   }
 )

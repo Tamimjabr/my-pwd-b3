@@ -36,6 +36,9 @@ template.innerHTML = `
     	top: 50px;
 	    left: 50px;
     }
+    my-window-com:focus{
+     z-index:200;
+    }
   </style>
   <div id='desktop'>
    <my-window-com><my-memory-game></my-memory-game></my-window-com>
@@ -69,6 +72,10 @@ customElements.define('my-pwd-com',
       this._memoryBtn=this.shadowRoot.querySelector('#memoryBtn')
       this._chattBtn=this.shadowRoot.querySelector('#chattBtn')
       this._TicBtn=this.shadowRoot.querySelector('#TicBtn')
+
+      this._topWindowZ=1
+      this._top=50
+      this._left=50
     }
 
     /**
@@ -102,13 +109,31 @@ customElements.define('my-pwd-com',
      * Called after the element has been removed from the DOM.
      */
     disconnectedCallback () {
-
+      // todo remove eventlisteners
     }
     _memoryBtnClick(){
       const memory=document.createElement('my-memory-game')
       const myWindow=document.createElement('my-window-com')
+      myWindow.setAttribute('z-index-number',this._topWindowZ)
+      myWindow.style.top=(this._top+10)+'px'
+      myWindow.style.left=(this._left+10)+'px'
+    
+      myWindow.style.zIndex=this._topWindowZ
+      console.log('#############', this.style.top)
+
+      console.log('here is desktop1',this._topWindowZ)
+      this._topWindowZ++
+      console.log('here is desktop2',this._topWindowZ)
+      myWindow.addEventListener('click',this._handleFocus)
       myWindow.appendChild(memory)
       this._desktop.appendChild(myWindow)
+      this._top=this._top+10
+      this._left=this._left+10
+
     }
+    _handleFocus(){
+ 
+    }
+
   }
 )
