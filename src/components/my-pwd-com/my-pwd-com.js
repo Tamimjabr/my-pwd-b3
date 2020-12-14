@@ -35,7 +35,7 @@ template.innerHTML = `
     my-window-com{
       position: absolute;
       top: 50px;
-	    left: 50px;
+      left: 50px;
     }
     my-window-com:focus{
      z-index:200;
@@ -104,6 +104,7 @@ customElements.define('my-pwd-com',
      */
     connectedCallback () {
       this._memoryBtn.addEventListener('click', this._memoryBtnClick.bind(this))
+      this._desktop.addEventListener('closewindow', this._handleClosingWindow.bind(this))
     }
 
     /**
@@ -111,13 +112,14 @@ customElements.define('my-pwd-com',
      */
     disconnectedCallback () {
       // todo remove eventlisteners
+
     }
 
     /**
      *
      */
     _memoryBtnClick () {
-      // todo let the
+      // todo let the that take a paramater with the element name
 
       const myWindows = Array.from(this.shadowRoot.querySelectorAll('my-window-com'))
       console.log(myWindows.length)
@@ -141,13 +143,23 @@ customElements.define('my-pwd-com',
     }
 
     /**
-     * Handling click on a window.
+     * Handling click on a window by bringing it to the top.
      *
      * @param {MouseEvent} event - click event.
      */
     _handleFocus (event) {
       event.target.style.zIndex = this._topWindowZ
       this._topWindowZ++
+    }
+
+    /**
+     * Handle Closing a window by removing the event listener.
+     *
+     * @param {CustomEvent} event - fired when closing a window
+     */
+    _handleClosingWindow (event) {
+      // removing the event listner from the closed window
+      event.target.removeEventListener('click', this._handleFocus)
     }
   }
 )

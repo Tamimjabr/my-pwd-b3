@@ -110,13 +110,18 @@ customElements.define(
      * Called after the element has been removed from the DOM.
      */
     disconnectedCallback () {
-      // todo remove eventlistener
+
     }
 
     /**
      * Handle click on the close button.
      */
     _handleCloseBtn () {
+      const myCustomEventListner = new CustomEvent('closewindow', {
+        bubbles: true
+      })
+      // trigger the event
+      this.dispatchEvent(myCustomEventListner)
       this.remove()
     }
   }
