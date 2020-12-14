@@ -77,6 +77,7 @@ customElements.define(
       )
       this._closeBtn = this.shadowRoot.querySelector('#close')
       this._window = this.shadowRoot.querySelector('#window')
+      this._toolBar = this.shadowRoot.querySelector('#toolBar')
 
       this._pos1 = 0
       this._pos2 = 0
@@ -140,9 +141,9 @@ customElements.define(
       this._pos3 = 0
       this._pos4 = 0
       // todo has changed
-      if (document.getElementById(elmnt.id + 'header')) {
+      if (this.shadowRoot.querySelector('#toolBar')) {
         // if present, the header is where you move the DIV from:
-        // document.getElementById(elmnt.id + 'header').onmousedown = dragMouseDown
+        this.shadowRoot.querySelector('#toolBar').onmousedown = dragMouseDown
       } else {
         // otherwise, move the DIV from anywhere inside the DIV:
         elmnt.onmousedown = dragMouseDown
