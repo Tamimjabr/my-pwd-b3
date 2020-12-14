@@ -77,11 +77,6 @@ customElements.define('my-pwd-com',
       this._topWindowZ = 2
       this._top = 50
       this._left = 50
-
-      this._pos1 = 0
-      this._pos2 = 0
-      this._pos3 = 0
-      this._pos3 = 0
     }
 
     /**
@@ -143,8 +138,6 @@ customElements.define('my-pwd-com',
 
       myWindow.appendChild(memory)
       this._desktop.appendChild(myWindow)
-      // ! to delete
-      this._dragElement(myWindow)
 
       // increase the top and left for the next created window
       this._top = this._top + 10
@@ -169,62 +162,6 @@ customElements.define('my-pwd-com',
     _handleClosingWindow (event) {
       // removing the event listner from the closed window
       event.target.removeEventListener('click', this._handleFocus)
-    }
-
-    /**
-     * @param elmnt
-     */
-    _dragElement (elmnt) {
-      this._pos1 = 0
-      this._pos2 = 0
-      this._pos3 = 0
-      this._pos4 = 0
-      // todo has changed
-      if (document.getElementById(elmnt.id + 'header')) {
-        // if present, the header is where you move the DIV from:
-        // document.getElementById(elmnt.id + 'header').onmousedown = dragMouseDown
-      } else {
-        // otherwise, move the DIV from anywhere inside the DIV:
-        elmnt.onmousedown = dragMouseDown
-      }
-
-      /**
-       * @param e
-       */
-      function dragMouseDown (e) {
-        e = e || window.event
-        e.preventDefault()
-        // get the mouse cursor position at startup:
-        this._pos3 = e.clientX
-        this._pos4 = e.clientY
-        document.onmouseup = closeDragElement
-        // call a function whenever the cursor moves:
-        document.onmousemove = elementDrag
-      }
-      /**
-       * @param e
-       */
-      function elementDrag (e) {
-        e = e || window.event
-        e.preventDefault()
-        // calculate the new cursor position:
-        this._pos1 = this._pos3 - e.clientX
-        this._pos2 = this._pos4 - e.clientY
-        this._pos3 = e.clientX
-        this._pos4 = e.clientY
-        // set the element's new position:
-        elmnt.style.top = (elmnt.offsetTop - this._pos2) + 'px'
-        elmnt.style.left = (elmnt.offsetLeft - this._pos1) + 'px'
-      }
-
-      /**
-       *
-       */
-      function closeDragElement () {
-        // stop moving when mouse button is released:
-        document.onmouseup = null
-        document.onmousemove = null
-      }
     }
   }
 )

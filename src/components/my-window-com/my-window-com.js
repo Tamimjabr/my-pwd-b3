@@ -77,6 +77,11 @@ customElements.define(
       )
       this._closeBtn = this.shadowRoot.querySelector('#close')
       this._window = this.shadowRoot.querySelector('#window')
+
+      this._pos1 = 0
+      this._pos2 = 0
+      this._pos3 = 0
+      this._pos3 = 0
     }
 
     /**
@@ -104,6 +109,7 @@ customElements.define(
      */
     connectedCallback () {
       this._closeBtn.addEventListener('click', this._handleCloseBtn.bind(this))
+      this._dragElement(this)
     }
 
     /**
@@ -123,6 +129,62 @@ customElements.define(
       // trigger the event
       this.dispatchEvent(myCustomEventListner)
       this.remove()
+    }
+
+    /**
+     * @param elmnt
+     */
+    _dragElement (elmnt) {
+      this._pos1 = 0
+      this._pos2 = 0
+      this._pos3 = 0
+      this._pos4 = 0
+      // todo has changed
+      if (document.getElementById(elmnt.id + 'header')) {
+        // if present, the header is where you move the DIV from:
+        // document.getElementById(elmnt.id + 'header').onmousedown = dragMouseDown
+      } else {
+        // otherwise, move the DIV from anywhere inside the DIV:
+        elmnt.onmousedown = dragMouseDown
+      }
+
+      /**
+       * @param e
+       */
+      function dragMouseDown (e) {
+        e = e || window.event
+        e.preventDefault()
+        // get the mouse cursor position at startup:
+        this._pos3 = e.clientX
+        this._pos4 = e.clientY
+        document.onmouseup = closeDragElement
+        // call a function whenever the cursor moves:
+        document.onmousemove = elementDrag
+      }
+      /**
+       * @param e
+       */
+      function elementDrag (e) {
+        e = e || window.event
+        e.preventDefault()
+        // calculate the new cursor position:
+        this._pos1 = this._pos3 - e.clientX
+        this._pos2 = this._pos4 - e.clientY
+        this._pos3 = e.clientX
+        this._pos4 = e.clientY
+        // set the element's new position:
+        elmnt.style.top = (elmnt.offsetTop - this._pos2) + 'px'
+        elmnt.style.left = (elmnt.offsetLeft - this._pos1) + 'px'
+      }
+
+      /**
+       *
+       */
+      function closeDragElement () {
+        // stop moving when mouse button is released:
+        document.onmouseup = null
+        document.onmousemove = null
+      }
     }
   }
 )
