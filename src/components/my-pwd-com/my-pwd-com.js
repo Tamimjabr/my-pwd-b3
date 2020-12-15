@@ -42,7 +42,7 @@ template.innerHTML = `
     }
   </style>
   <div id='desktop'>
-   <my-window-com><my-memory-game></my-memory-game></my-window-com>
+   <my-window-com><my-tic-tac-toe></my-tic-tac-toe></my-window-com>
    <div id='desktopBar'>
    <button id="memoryBtn">Memory</button>
    <button id="chattBtn"> Chatt</button>
@@ -72,7 +72,7 @@ customElements.define('my-pwd-com',
       this._desktop = this.shadowRoot.querySelector('#desktop')
       this._memoryBtn = this.shadowRoot.querySelector('#memoryBtn')
       this._chattBtn = this.shadowRoot.querySelector('#chattBtn')
-      this._TicBtn = this.shadowRoot.querySelector('#TicBtn')
+      this._ticBtn = this.shadowRoot.querySelector('#TicBtn')
 
       this._topWindowZ = 2
       this._top = 50
@@ -105,6 +105,7 @@ customElements.define('my-pwd-com',
     connectedCallback () {
       this._memoryBtn.addEventListener('click', this._memoryBtnClick.bind(this))
       this._desktop.addEventListener('closewindow', this._handleClosingWindow.bind(this))
+      this._ticBtn.addEventListener('click', this._ticBtnClick.bind(this))
     }
 
     /**
@@ -116,9 +117,9 @@ customElements.define('my-pwd-com',
     }
 
     /**
-     *
+     * @param component
      */
-    _memoryBtnClick () {
+    _createWindow (component) {
       // todo let the that take a paramater with the element name
 
       const myWindows = Array.from(this.shadowRoot.querySelectorAll('my-window-com'))
@@ -128,7 +129,7 @@ customElements.define('my-pwd-com',
         this._top = 50
         this._left = 50
       }
-      const memory = document.createElement('my-memory-game')
+      const componentElement = document.createElement(component)
       const myWindow = document.createElement('my-window-com')
       myWindow.style.top = (this._top + 10) + 'px'
       myWindow.style.left = (this._left + 10) + 'px'
@@ -136,7 +137,7 @@ customElements.define('my-pwd-com',
       // todo to remove the event listner, maybe in my-window-com in disconnectedCallback
       myWindow.addEventListener('click', this._handleFocus.bind(this))
 
-      myWindow.appendChild(memory)
+      myWindow.appendChild(componentElement)
       this._desktop.appendChild(myWindow)
 
       // increase the top and left for the next created window
@@ -162,6 +163,20 @@ customElements.define('my-pwd-com',
     _handleClosingWindow (event) {
       // removing the event listner from the closed window
       event.target.removeEventListener('click', this._handleFocus)
+    }
+
+    /**
+     *
+     */
+    _ticBtnClick () {
+      this._createWindow('my-tic-tac-toe')
+    }
+
+    /**
+     *
+     */
+    _memoryBtnClick () {
+      this._createWindow('my-memory-game')
     }
   }
 )
