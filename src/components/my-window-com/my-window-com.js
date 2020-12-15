@@ -78,11 +78,6 @@ customElements.define(
       this._closeBtn = this.shadowRoot.querySelector('#close')
       this._window = this.shadowRoot.querySelector('#window')
       this._toolBar = this.shadowRoot.querySelector('#toolBar')
-
-      this._pos1 = 0
-      this._pos2 = 0
-      this._pos3 = 0
-      this._pos3 = 0
     }
 
     /**
@@ -136,10 +131,10 @@ customElements.define(
      * @param elmnt
      */
     _dragElement (elmnt) {
-      this._pos1 = 0
-      this._pos2 = 0
-      this._pos3 = 0
-      this._pos4 = 0
+      let pos1 = 0
+      let pos2 = 0
+      let pos3 = 0
+      let pos4 = 0
       // todo has changed
       if (this.shadowRoot.querySelector('#toolBar')) {
         // if present, the header is where you move the DIV from:
@@ -156,8 +151,8 @@ customElements.define(
         e = e || window.event
         e.preventDefault()
         // get the mouse cursor position at startup:
-        this._pos3 = e.clientX
-        this._pos4 = e.clientY
+        pos3 = e.clientX
+        pos4 = e.clientY
         document.onmouseup = closeDragElement
         // call a function whenever the cursor moves:
         document.onmousemove = elementDrag
@@ -169,13 +164,13 @@ customElements.define(
         e = e || window.event
         e.preventDefault()
         // calculate the new cursor position:
-        this._pos1 = this._pos3 - e.clientX
-        this._pos2 = this._pos4 - e.clientY
-        this._pos3 = e.clientX
-        this._pos4 = e.clientY
+        pos1 = pos3 - e.clientX
+        pos2 = pos4 - e.clientY
+        pos3 = e.clientX
+        pos4 = e.clientY
         // set the element's new position:
-        elmnt.style.top = (elmnt.offsetTop - this._pos2) + 'px'
-        elmnt.style.left = (elmnt.offsetLeft - this._pos1) + 'px'
+        elmnt.style.top = (elmnt.offsetTop - pos2) + 'px'
+        elmnt.style.left = (elmnt.offsetLeft - pos1) + 'px'
       }
 
       /**
