@@ -121,6 +121,7 @@ customElements.define('my-chat-app',
      */
     async _connect () {
       this._webSocket = await new WebSocket('wss://cscloud6-127.lnu.se/socket/')
+      // make sure that we are connected before sending or recieving messages or
       this._webSocket.addEventListener('open', this._listenToMessages.bind(this))
       this._webSocket.addEventListener('error', this._handleError.bind(this))
     }
@@ -129,13 +130,12 @@ customElements.define('my-chat-app',
      * @param event
      */
     _sendMessage (event) {
-      // try to connect if not connected
-      // this._connect()
-      this._connect()
       // enable user to send message by clicking on send button or pressing Enter
       if (event.code === 'Enter' || event.type === 'click') {
         // preventing the Enter button from creating a blank row in the textarea
         event.preventDefault()
+        // try to connect if not connected
+        this._connect()
         // the data to send
         const data = {
           type: 'message',
