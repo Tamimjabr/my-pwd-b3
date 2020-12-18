@@ -167,8 +167,13 @@ customElements.define(
         pos3 = e.clientX
         pos4 = e.clientY
         // set the element's new position:
-        elmnt.style.top = (elmnt.offsetTop - pos2) + 'px'
-        elmnt.style.left = (elmnt.offsetLeft - pos1) + 'px'
+        const sizes = elmnt.getBoundingClientRect()
+        console.log(sizes)
+        console.log(document.documentElement.clientWidth)
+        console.log(document.documentElement.clientHeight)
+
+        elmnt.style.top = (elmnt.offsetTop - pos2) < 0 ? 0 + 'px' : (elmnt.offsetTop - pos2) + 'px'
+        elmnt.style.left = (elmnt.offsetLeft - pos1) < 0 ? 0 + 'px:' : (elmnt.offsetLeft - pos1) + 'px'
       }
 
       /**
