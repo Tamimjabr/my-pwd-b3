@@ -32,6 +32,9 @@ template.innerHTML = `
   flex-wrap: nowrap;
   justify-content: flex-end;
   align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 #content{
   display: flex;
@@ -45,7 +48,7 @@ template.innerHTML = `
    <button id="close">X</button>
   </div>
   <div id="content">
-    <slot></slot>
+      <slot></slot>
   </div>
 </div>
 `
