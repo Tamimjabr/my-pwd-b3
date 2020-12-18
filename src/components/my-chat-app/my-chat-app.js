@@ -15,11 +15,9 @@ template.innerHTML = `
       width:100%;
       height:100%;
       background:white;
- 
     }
     #messagesArea{
-      background:green;
-      
+      background:#f0e2d0;
       min-height:400px;
     }
     #chattContainer{
@@ -31,17 +29,24 @@ template.innerHTML = `
       position:absolute;
       left:0;
       bottom:0;
+      width:100%; 
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
     textarea{
-      height:10%;
-      width:70%; 
+      height:30px;
+      width:90%; 
     }
 
   </style>
   <div id='chattContainer'>
     <div id='messagesArea'>
     </div>
-      <textarea id='submitArea'></textarea>
+      <div id='submitArea'>
+      <textarea id='typeArea'></textarea>
+      <button id='submitBtn'>send</button>
+      </div>
   </div>
 `
 
@@ -63,6 +68,11 @@ customElements.define('my-chat-app',
       // append the template to the shadow root.
       this.attachShadow({ mode: 'open' })
         .appendChild(template.content.cloneNode(true))
+
+      this._typeArea = this.shadowRoot.querySelector('#typeArea')
+      this._submitBtn = this.shadowRoot.querySelector('#submitBtn')
+
+      this._webSocket = null
     }
 
     /**
@@ -93,14 +103,65 @@ customElements.define('my-chat-app',
      * Called after the element is inserted into the DOM.
      */
     connectedCallback () {
-
+      this._connect()
+      this._typeArea.addEventListener('keydown', this._sendMessage.bind(this))
+      this._submitBtn.addEventListener('click', this._sendMessage.bind(this))
     }
 
     /**
      * Called after the element has been removed from the DOM.
      */
     disconnectedCallback () {
+      this._typeArea.removeEventListener('keydown', this._sendMessage)
+      this._submitBtn.removeEventListener('click', this._sendMessage)
+    }
+
+    /**
+     *
+     */
+    _connect () {
+      this._webSocket = new WebSocket('wss://cscloud6-127.lnu.se/socket/')
+      this._webSocket.addEventListener('message', this._nice.bind(this))
+    }
+
+    /**
+     * @param event
+     */
+    _sendMessage (event) {
+      // try to connect if not connected
+      // this._connect()
+
+      // enable user to send message by clicking on send button or pressing Enter
+      if (event.code === 'Enter' || event.type === 'click') {
+        // preventing the Enter button from creating a blank row in the textarea
+        event.preventDefault()
+        // empty the textarea
+        console.log(this._typeArea.value)
+        const data = {
+          type: 'message',
+          data: this._typeArea.value,
+          username: 'It is me',
+          channel: 'my, not so secret, channel',
+          key: 'eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd'
+        }
+        this._webSocket.send(JSON.stringify(data))
+
+        this._typeArea.value = ''
+      }
+    }
+
+    /**
+     *
+     */
+    _displayReceivedMessage () {
 
     }
-  }
-)
+
+    /**
+     * @param event
+     */
+    _nice (event) {
+      console.log(event)
+      console.log(typeof this._webSocket)
+    }
+  })
