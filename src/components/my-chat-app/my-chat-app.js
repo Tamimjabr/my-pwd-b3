@@ -120,10 +120,18 @@ customElements.define('my-chat-app',
      *
      */
     async _connect () {
-      this._webSocket = await new WebSocket('wss://cscloud6-127.lnu.se/socket/')
-      // make sure that we are connected before sending or recieving messages or
-      this._webSocket.addEventListener('open', this._listenToMessages.bind(this))
-      this._webSocket.addEventListener('error', this._handleError.bind(this))
+      // check if we already have a webSocket connection before creating a new one
+      if (this._webSocket && this._webSocket.readyState === 1) {
+        console.log('#########', this._webSocket.readyState)
+        console.log('a websocket is already existed')
+      } else {
+        this._webSocket = await new WebSocket('wss://cscloud6-127.lnu.se/socket/')
+
+        // make sure that we are connected before sending or recieving messages or
+        this._webSocket.addEventListener('open', this._listenToMessages.bind(this))
+        this._webSocket.addEventListener('error', this._handleError.bind(this))
+        console.log('creating a new one')
+      }
     }
 
     /**
@@ -174,5 +182,6 @@ customElements.define('my-chat-app',
       setTimeout(() => {
         this._connect()
       }, 30000)
+      // todo display a message to the user that user is not connected and we will try to send the message soon
     }
   })
