@@ -15,8 +15,8 @@ template.innerHTML = `
     position: absolute; 
   }
 #window{
-  width: 500px;
-  height: 400px;
+  width: 350px;
+  height: 500px;
   border: 2px solid balck;
   border-radius: 5px;
   background-color: rgb(241, 202, 165);
@@ -24,9 +24,6 @@ template.innerHTML = `
   overflow: auto;
   position: absolute; 
 }
-#window:focus{
-  background-color: gray;
-    }
 #toolBar{
   background-color: gray;
   border: 1px solid balck;
@@ -45,8 +42,6 @@ template.innerHTML = `
 
 <div id="window">
   <div id='toolBar'>
-  <button id="minimize">-</button>
-   <button id="fullscreenToggle">+</button>
    <button id="close">X</button>
   </div>
   <div id="content">

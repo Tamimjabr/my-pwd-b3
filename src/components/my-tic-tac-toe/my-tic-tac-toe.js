@@ -11,16 +11,14 @@ const template = document.createElement('template')
 template.innerHTML = `
 <style>
 :host{  
-    width:100vw;
-    height:100vh;
-    background-color: white;
+    width:100%;
+    height:100%; 
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align:center;
     box-sizing: border-box;
-    position: relative;
 }
 #game-board{
   width:300px;
@@ -98,7 +96,7 @@ div#result{
   align-items: center;
   justify-content: center;
   position: absolute;
-  top: 0;
+  top: 22px;
   left: 0; 
   right: 0;
   bottom: 0;
@@ -136,7 +134,6 @@ button{
 <h2>tamim</h2>
 <button id='restartBtn'>Restart</button>
 </div>
-
 `
 /**
  * Define custom element.

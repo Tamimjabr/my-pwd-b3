@@ -25,7 +25,7 @@ const template = document.createElement('template')
 template.innerHTML = `
   <style>
     :host{
-      --tile-size:80px
+      --tile-size:70px;
     }
     #game-board{
     display: grid;
@@ -41,7 +41,7 @@ template.innerHTML = `
       height:var(--tile-size);
     }
     my-flipping-tile::part(tile-back) {
-     border-width: 5px;
+    border-width: 5px;
     background-image: url("${IMG_URLS[0]}");
     background-repeat: no-repeat;
     background-position: center/80%;
@@ -52,7 +52,7 @@ template.innerHTML = `
     }
     button{
     margin: 10px;
-    padding:10px;
+    padding:5px;
     background-color: green;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size:1.2rem;

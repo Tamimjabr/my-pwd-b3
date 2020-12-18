@@ -22,6 +22,7 @@ template.innerHTML = `
       background-size:cover;
       height: 100vh;
       width:100vw;
+      overflow: hidden;
       position: relative;
     }
     #desktopBar{
@@ -30,7 +31,11 @@ template.innerHTML = `
       bottom: 0;
       width: 100vw;
       height: 40px;
-      background-color:  #c4b6b6;
+      background-color:  rgba(196, 182, 182,0.8);     
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      gap: 15px;
     } 
     my-window-com{
       position: absolute;
@@ -39,6 +44,13 @@ template.innerHTML = `
     }
     my-window-com:focus{
      z-index:200;
+    }
+    button{
+      height: 100%;
+      margin-left: 10px;
+      border-radius: 5px;
+      user-select: none;
+      background-color:#adce74;  
     }
   </style>
   <div id='desktop'>
