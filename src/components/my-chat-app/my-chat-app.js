@@ -119,9 +119,10 @@ customElements.define('my-chat-app',
     /**
      *
      */
-    _connect () {
-      this._webSocket = new WebSocket('wss://cscloud6-127.lnu.se/socket/')
-      this._webSocket.addEventListener('message', this._nice.bind(this))
+    async _connect () {
+      this._webSocket = await new WebSocket('wss://cscloud6-127.lnu.se/socket/')
+      this._webSocket.addEventListener('open', this._listenToMessages.bind(this))
+      this._webSocket.addEventListener('error', this._handleError.bind(this))
     }
 
     /**
@@ -130,13 +131,12 @@ customElements.define('my-chat-app',
     _sendMessage (event) {
       // try to connect if not connected
       // this._connect()
-
+      this._connect()
       // enable user to send message by clicking on send button or pressing Enter
       if (event.code === 'Enter' || event.type === 'click') {
         // preventing the Enter button from creating a blank row in the textarea
         event.preventDefault()
-        // empty the textarea
-        console.log(this._typeArea.value)
+        // the data to send
         const data = {
           type: 'message',
           data: this._typeArea.value,
@@ -145,23 +145,34 @@ customElements.define('my-chat-app',
           key: 'eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd'
         }
         this._webSocket.send(JSON.stringify(data))
-
+        // empty the textarea
         this._typeArea.value = ''
       }
     }
 
     /**
-     *
+     * @param event
      */
-    _displayReceivedMessage () {
-
+    _displayReceivedMessage (event) {
+      console.log(event)
     }
 
     /**
-     * @param event
+     *
      */
-    _nice (event) {
-      console.log(event)
-      console.log(typeof this._webSocket)
+    _listenToMessages () {
+      console.log('You are connected to the server using websocket!')
+      this._webSocket.addEventListener('message', this._displayReceivedMessage.bind(this))
+    }
+
+    /**
+     *
+     */
+    _handleError () {
+      console.log('Faild connecting to the server using websocket!')
+      // when we are offline or an error occured while connecting to the server try to connect to the server every 30sec
+      setTimeout(() => {
+        this._connect()
+      }, 30000)
     }
   })
