@@ -54,7 +54,7 @@ template.innerHTML = `
     }
   </style>
   <div id='desktop'>
-   <my-window-com><my-tic-tac-toe></my-tic-tac-toe></my-window-com>
+   <my-window-com><my-chat-app></my-chat-app></my-window-com>
    <div id='desktopBar'>
    <button id="memoryBtn">Memory</button>
    <button id="chattBtn"> Chatt</button>
@@ -118,6 +118,7 @@ customElements.define('my-pwd-com',
       this._memoryBtn.addEventListener('click', this._memoryBtnClick.bind(this))
       this._desktop.addEventListener('closewindow', this._handleClosingWindow.bind(this))
       this._ticBtn.addEventListener('click', this._ticBtnClick.bind(this))
+      this._chattBtn.addEventListener('click', this._chattBtnClick.bind(this))
     }
 
     /**
@@ -189,6 +190,13 @@ customElements.define('my-pwd-com',
      */
     _memoryBtnClick () {
       this._createWindow('my-memory-game')
+    }
+
+    /**
+     *
+     */
+    _chattBtnClick () {
+      this._createWindow('my-chat-app')
     }
   }
 )

@@ -30,6 +30,7 @@ template.innerHTML = `
 }
 h1{
   color:green;
+  user-select: none;
 }
 .cell{
   width:auto;
