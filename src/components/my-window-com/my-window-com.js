@@ -172,8 +172,22 @@ customElements.define(
         console.log(document.documentElement.clientWidth)
         console.log(document.documentElement.clientHeight)
 
-        elmnt.style.top = (elmnt.offsetTop - pos2) < 0 ? 0 + 'px' : (elmnt.offsetTop - pos2) + 'px'
-        elmnt.style.left = (elmnt.offsetLeft - pos1) < 0 ? 0 + 'px:' : (elmnt.offsetLeft - pos1) + 'px'
+        if ((elmnt.offsetTop - pos2) < 0 || (elmnt.offsetTop - pos2) > document.documentElement.clientHeight) {
+          // prevent the element from going down outside the desktop
+          elmnt.style.top = (elmnt.offsetTop - pos2) > document.documentElement.clientHeight ? (document.documentElement.clientHeight - 500) + 'px' : '0'
+          elmnt.style.left = (elmnt.offsetLeft - pos1) + 'px'
+        } else {
+          elmnt.style.top = (elmnt.offsetTop - pos2) + 'px'
+          elmnt.style.left = (elmnt.offsetLeft - pos1) + 'px'
+        }
+        if ((elmnt.offsetLeft - pos1) < 0 || (elmnt.offsetLeft - pos1) > document.documentElement.clientWidth) {
+          elmnt.style.top = (elmnt.offsetTop - pos2) + 'px'
+          // prevent the element from going right outside the desktop
+          elmnt.style.left = (elmnt.offsetLeft - pos1) > document.documentElement.clientHeight ? (document.documentElement.clientWidth - 400) + 'px' : '0'
+        } else {
+          elmnt.style.top = (elmnt.offsetTop - pos2) + 'px'
+          elmnt.style.left = (elmnt.offsetLeft - pos1) + 'px'
+        }
       }
 
       /**
