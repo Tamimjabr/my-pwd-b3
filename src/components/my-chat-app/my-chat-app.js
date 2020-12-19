@@ -23,12 +23,11 @@ template.innerHTML = `
     }
     #messagesArea{
       background:#f0e2d0;
-      min-height:400px;
+      height:400px;
       overflow: auto;
     }
-
     #submitArea{
-      position:absolute;
+      position:sticky;
       left:0;
       bottom:0;
       width:100%; 
@@ -43,10 +42,11 @@ template.innerHTML = `
     }
     p{
       margin-top: 0;
+      word-break: break-all;
     }
 
   </style>
-  <div id='chattContainer'>
+  <div id='chatContainer'>
     <div id='messagesArea'>
     </div>
       <div id='submitArea'>
@@ -176,17 +176,22 @@ customElements.define('my-chat-app',
       const data = JSON.parse(event.data)
       console.log(data.data)
       console.log(data.username)
-      if (data.userIdentifier == '1') {
-        data.username = 'You'
-      }
 
       const fragment = document.createDocumentFragment()
       const messageContainer = document.createElement('div')
       const message = document.createElement('p')
+      if (data.userIdentifier == '1') {
+        data.username = 'You'
+        message.style.color = 'green'
+      }
       message.textContent = data.username + ' : ' + data.data
+
       messageContainer.appendChild(message)
       fragment.appendChild(messageContainer)
       this._messagesArea.appendChild(fragment)
+
+      // scroll to the last message
+      this._messagesArea.scrollTop = this._messagesArea.scrollHeight
     }
 
     /**
