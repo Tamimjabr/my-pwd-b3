@@ -87,6 +87,8 @@ customElements.define('my-chat-app',
       this._messagesArea = this.shadowRoot.querySelector('#messagesArea')
       this._notConnectedMessage = this.shadowRoot.querySelector('#notConnectedMessage')
       this._webSocket = null
+      this._randomId = null
+      this._timeoutId = null
     }
 
     /**
@@ -120,6 +122,8 @@ customElements.define('my-chat-app',
       this._connect()
       this._typeArea.addEventListener('keydown', this._sendMessage.bind(this))
       this._submitBtn.addEventListener('click', this._sendMessage.bind(this))
+      // random a number between 0 and 100
+      this._randomId = Math.floor(Math.random() * (100 - 0 + 1)) + 0
     }
 
     /**
@@ -130,6 +134,7 @@ customElements.define('my-chat-app',
       this._submitBtn.removeEventListener('click', this._sendMessage)
       // closing the websocket when removing the component
       this._webSocket.close()
+      clearTimeout(this._timeoutId)
     }
 
     /**
@@ -167,7 +172,7 @@ customElements.define('my-chat-app',
           username: 'It is me',
           channel: 'my, not so secret, channel',
           key: 'eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd',
-          userIdentifier: '1'
+          userIdentifier: this._randomId
         }
         this._webSocket.send(JSON.stringify(data))
         // empty the textarea
@@ -181,13 +186,10 @@ customElements.define('my-chat-app',
     _displayReceivedMessage (event) {
       console.log(event)
       const data = JSON.parse(event.data)
-      console.log(data.data)
-      console.log(data.username)
-
       const fragment = document.createDocumentFragment()
       const messageContainer = document.createElement('div')
       const message = document.createElement('p')
-      if (data.userIdentifier == '1') {
+      if (data.userIdentifier === this._randomId) {
         data.username = 'You'
         message.style.color = 'green'
       }
@@ -215,14 +217,12 @@ customElements.define('my-chat-app',
      *
      */
     _handleError () {
-      console.error('Faild connecting to the server using websocket!')
+      console.error('Faild connecting to the server using websocket!,try to connect in 10sec')
       this._notConnectedMessage.classList.remove('hide')
       this._typeArea.setAttribute('disabled', '')
-      console.log('try to connect')
       // when we are offline or an error occured while connecting to the server try to connect to the server every 10sec
-      setTimeout(() => {
+      this._timeoutId = setTimeout(() => {
         this._connect()
       }, 10000)
-      // todo display a message to the user that user is not connected and we will try to send the message soon
     }
   })
