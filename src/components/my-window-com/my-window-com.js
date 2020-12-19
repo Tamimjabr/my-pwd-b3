@@ -163,11 +163,6 @@ customElements.define(
         pos2 = pos4 - e.clientY
         pos3 = e.clientX
         pos4 = e.clientY
-        // set the element's new position:
-        const sizes = elmnt.getBoundingClientRect()
-        console.log(sizes)
-        console.log(document.documentElement.clientWidth)
-        console.log(document.documentElement.clientHeight)
 
         if ((elmnt.offsetTop - pos2) < 0 || (elmnt.offsetTop - pos2) > document.documentElement.clientHeight) {
           // prevent the element from going down outside the desktop

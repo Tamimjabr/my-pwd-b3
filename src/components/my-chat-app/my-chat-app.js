@@ -50,8 +50,25 @@ template.innerHTML = `
     small.hide{
       display: none;
     }
+    my-nickname{
+      position: absolute;
+      top: 22px;
+      left: 0; 
+      right: 0;
+      bottom: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-color: rgba(0,0,0,0.8);
+      z-index: 2;
+    }
+    my-nickname.hidden{
+      display:none;
+    }
 
   </style>
+  <my-nickname></my-nickname>
   <div id='chatContainer'>
     <div id='messagesArea'>
     </div>
@@ -169,7 +186,7 @@ customElements.define('my-chat-app',
         const data = {
           type: 'message',
           data: this._typeArea.value,
-          username: 'It is me',
+          username: localStorage.getItem('chat_app_username'),
           channel: 'my, not so secret, channel',
           key: 'eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd',
           userIdentifier: this._randomId
@@ -186,6 +203,7 @@ customElements.define('my-chat-app',
     _displayReceivedMessage (event) {
       console.log(event)
       const data = JSON.parse(event.data)
+      // todo check if the data.type is message and not heartbeat
       const fragment = document.createDocumentFragment()
       const messageContainer = document.createElement('div')
       const message = document.createElement('p')
