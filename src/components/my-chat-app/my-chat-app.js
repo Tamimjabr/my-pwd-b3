@@ -44,15 +44,22 @@ template.innerHTML = `
       margin-top: 0;
       word-break: break-all;
     }
+    small{
+      color:red
+    }
+    small.hide{
+      display: none;
+    }
 
   </style>
   <div id='chatContainer'>
     <div id='messagesArea'>
     </div>
       <div id='submitArea'>
-      <textarea id='typeArea'></textarea>
-      <button id='submitBtn'>send</button>
+         <textarea id='typeArea'></textarea>
+         <button id='submitBtn'>send</button>
       </div>
+      <small id='notConnectedMessage' class='hide'>You will be able to send messages again as soon as you are connected to the server!</small>
   </div>
 `
 
@@ -78,7 +85,7 @@ customElements.define('my-chat-app',
       this._typeArea = this.shadowRoot.querySelector('#typeArea')
       this._submitBtn = this.shadowRoot.querySelector('#submitBtn')
       this._messagesArea = this.shadowRoot.querySelector('#messagesArea')
-
+      this._notConnectedMessage = this.shadowRoot.querySelector('#notConnectedMessage')
       this._webSocket = null
     }
 
@@ -200,6 +207,8 @@ customElements.define('my-chat-app',
     _listenToMessages () {
       console.log('You are connected to the server using websocket!, now you can send and recieve messages.')
       this._webSocket.addEventListener('message', this._displayReceivedMessage.bind(this))
+      this._notConnectedMessage.classList.add('hide')
+      this._typeArea.removeAttribute('disabled')
     }
 
     /**
@@ -207,10 +216,13 @@ customElements.define('my-chat-app',
      */
     _handleError () {
       console.error('Faild connecting to the server using websocket!')
-      // when we are offline or an error occured while connecting to the server try to connect to the server every 30sec
+      this._notConnectedMessage.classList.remove('hide')
+      this._typeArea.setAttribute('disabled', '')
+      console.log('try to connect')
+      // when we are offline or an error occured while connecting to the server try to connect to the server every 10sec
       setTimeout(() => {
         this._connect()
-      }, 30000)
+      }, 10000)
       // todo display a message to the user that user is not connected and we will try to send the message soon
     }
   })
