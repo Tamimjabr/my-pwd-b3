@@ -11,9 +11,6 @@
 const template = document.createElement('template')
 template.innerHTML = `
 <style>
-  :host{
-    position: absolute; 
-  }
 #window{
   width: 350px;
   height: 500px;

@@ -16,15 +16,17 @@ template.innerHTML = `
       height:100%;
       background:white;
     }
-    #messagesArea{
-      background:#f0e2d0;
-      min-height:400px;
-    }
     #chattContainer{
       height:100%;
       width:100%; 
       position: relative; 
     }
+    #messagesArea{
+      background:#f0e2d0;
+      min-height:400px;
+      overflow: auto;
+    }
+
     #submitArea{
       position:absolute;
       left:0;
@@ -33,10 +35,14 @@ template.innerHTML = `
       display: flex;
       justify-content: center;
       align-items: center;
+      clear: both;
     }
     textarea{
       height:30px;
       width:90%; 
+    }
+    p{
+      margin-top: 0;
     }
 
   </style>
@@ -71,6 +77,7 @@ customElements.define('my-chat-app',
 
       this._typeArea = this.shadowRoot.querySelector('#typeArea')
       this._submitBtn = this.shadowRoot.querySelector('#submitBtn')
+      this._messagesArea = this.shadowRoot.querySelector('#messagesArea')
 
       this._webSocket = null
     }
@@ -114,6 +121,8 @@ customElements.define('my-chat-app',
     disconnectedCallback () {
       this._typeArea.removeEventListener('keydown', this._sendMessage)
       this._submitBtn.removeEventListener('click', this._sendMessage)
+      // closing the websocket when removing the component
+      this._webSocket.close()
     }
 
     /**
@@ -150,7 +159,8 @@ customElements.define('my-chat-app',
           data: this._typeArea.value,
           username: 'It is me',
           channel: 'my, not so secret, channel',
-          key: 'eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd'
+          key: 'eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd',
+          userIdentifier: '1'
         }
         this._webSocket.send(JSON.stringify(data))
         // empty the textarea
@@ -163,13 +173,27 @@ customElements.define('my-chat-app',
      */
     _displayReceivedMessage (event) {
       console.log(event)
+      const data = JSON.parse(event.data)
+      console.log(data.data)
+      console.log(data.username)
+      if (data.userIdentifier == '1') {
+        data.username = 'You'
+      }
+
+      const fragment = document.createDocumentFragment()
+      const messageContainer = document.createElement('div')
+      const message = document.createElement('p')
+      message.textContent = data.username + ' : ' + data.data
+      messageContainer.appendChild(message)
+      fragment.appendChild(messageContainer)
+      this._messagesArea.appendChild(fragment)
     }
 
     /**
      *
      */
     _listenToMessages () {
-      console.log('You are connected to the server using websocket!')
+      console.log('You are connected to the server using websocket!, now you can send and recieve messages.')
       this._webSocket.addEventListener('message', this._displayReceivedMessage.bind(this))
     }
 
@@ -177,7 +201,7 @@ customElements.define('my-chat-app',
      *
      */
     _handleError () {
-      console.log('Faild connecting to the server using websocket!')
+      console.error('Faild connecting to the server using websocket!')
       // when we are offline or an error occured while connecting to the server try to connect to the server every 30sec
       setTimeout(() => {
         this._connect()
