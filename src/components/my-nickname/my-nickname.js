@@ -106,7 +106,7 @@ customElements.define('my-nickname',
       if (this._nameInput.value.trim()) {
         this._formElement.classList.add('hidden')
         this.setAttribute('username', this._nameInput.value.trim())
-        localStorage.setItem('chat_app_username', this._nameInput.value.toUpperCase())
+        localStorage.setItem('chat_app_username', this._nameInput.value)
         this.classList.add('hidden')
       }
     }

@@ -22,14 +22,21 @@ template.innerHTML = `
       position: relative; 
     }
     #changeNameBtn{
+      background-color:rgb(196, 197, 168);
+      padding:0;
       position:absolute;
       top:0;
       z-index: 1;
+      font-family: Cursive, Helvetica, sans-serif;
     }
     #messagesArea{
       background:#f0e2d0;
       height:400px;
       overflow: auto;
+    }
+    #messagesArea div{
+      margin:0 10px;
+      font-family: Arial, Helvetica, sans-serif;
     }
     #emojiContainer{
       background-color: rgba(233, 174, 107,0.8);
@@ -89,6 +96,12 @@ template.innerHTML = `
     my-nickname.hidden{
       display:none;
     }
+    #emojiBtn,#submitBtn{
+      font-size: 1.2rem;
+      padding: 5px;
+      background-color: rgba(255, 255, 255,0.0);
+      border:none;
+    }
 
   </style>
   <my-nickname id='username'></my-nickname>
@@ -120,8 +133,8 @@ template.innerHTML = `
          <button class='emoji'>❤️</button>
         </div>
         <button id='emojiBtn'>😍</button>
-        <textarea id='typeArea'></textarea>
-        <button id='submitBtn'>send</button>
+        <textarea id='typeArea' placeholder="Type your message here"></textarea>
+        <button id='submitBtn'>📤</button>
       </div>
       <small id='notConnectedMessage' class='hide'>You will be able to send messages again as soon as you are connected to the server!</small>
   </div>
@@ -242,18 +255,20 @@ customElements.define('my-chat-app',
         event.preventDefault()
         // try to connect if not connected
         this._connect()
+        if (this._typeArea.value !== '') {
         // the data to send
-        const data = {
-          type: 'message',
-          data: this._typeArea.value,
-          username: localStorage.getItem('chat_app_username'),
-          channel: 'my, not so secret, channel',
-          key: 'eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd',
-          userIdentifier: this._randomId
+          const data = {
+            type: 'message',
+            data: this._typeArea.value,
+            username: localStorage.getItem('chat_app_username'),
+            channel: 'my, not so secret, channel',
+            key: 'eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd',
+            userIdentifier: this._randomId
+          }
+          this._webSocket.send(JSON.stringify(data))
+          // empty the textarea
+          this._typeArea.value = ''
         }
-        this._webSocket.send(JSON.stringify(data))
-        // empty the textarea
-        this._typeArea.value = ''
       }
     }
 
@@ -270,6 +285,7 @@ customElements.define('my-chat-app',
       if (data.userIdentifier === this._randomId) {
         data.username = 'You'
         message.style.color = 'green'
+        messageContainer.style.textAlign = 'right'
       }
       message.textContent = data.username + ' : ' + data.data
 
