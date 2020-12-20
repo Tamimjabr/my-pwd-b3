@@ -21,6 +21,11 @@ template.innerHTML = `
       width:100%; 
       position: relative; 
     }
+    #changeNameBtn{
+      position:absolute;
+      top:0;
+      z-index: 1;
+    }
     #messagesArea{
       background:#f0e2d0;
       height:400px;
@@ -86,11 +91,11 @@ template.innerHTML = `
     }
 
   </style>
-  <my-nickname></my-nickname>
+  <my-nickname id='username'></my-nickname>
   <div id='chatContainer'>
+    <button id='changeNameBtn'>Change nickname</button>
     <div id='messagesArea'>
     </div>
-   
       <div id='submitArea'>
         <div id='emojiContainer' class='hide'>
          <button class='emoji'>😂</button>
@@ -140,7 +145,8 @@ customElements.define('my-chat-app',
       // append the template to the shadow root.
       this.attachShadow({ mode: 'open' })
         .appendChild(template.content.cloneNode(true))
-
+      this._usernameComp = this.shadowRoot.querySelector('#username')
+      this._changeNameBtn = this.shadowRoot.querySelector('#changeNameBtn')
       this._typeArea = this.shadowRoot.querySelector('#typeArea')
       this._submitBtn = this.shadowRoot.querySelector('#submitBtn')
       this._messagesArea = this.shadowRoot.querySelector('#messagesArea')
@@ -190,6 +196,7 @@ customElements.define('my-chat-app',
       Array.from(this._emojis).map(emoji => {
         return emoji.addEventListener('click', this._enterEmoji.bind(this))
       })
+      this._changeNameBtn.addEventListener('click', this._changeUsername.bind(this))
     }
 
     /**
@@ -275,7 +282,7 @@ customElements.define('my-chat-app',
     }
 
     /**
-     * 
+     *
      */
     _listenToMessages () {
       console.log('You are connected to the server using websocket!, now you can send and recieve messages.')
@@ -311,5 +318,14 @@ customElements.define('my-chat-app',
      */
     _enterEmoji (event) {
       this._typeArea.value += event.target.textContent
+    }
+
+    /**
+     * Handle clicking on the change nickname button
+     * by displaying my-nickname component enabling the user to enter a new nickname.
+     *
+     */
+    _changeUsername () {
+      this._usernameComp.classList.remove('hidden')
     }
   })
