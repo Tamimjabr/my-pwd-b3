@@ -53,19 +53,35 @@ template.innerHTML = `
     button{
     margin: 10px;
     padding:5px;
-    background-color: green;
+    background-color: #70af85;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size:1.2rem;
     border-radius:10px;
     outline: none;
-    color:white
+    color:black;
   }
   button:focus{
-    color:green;
+    color:#70af85;
     background-color:white;
   }
-  h1{
+  h3{
     text-align: center;
+    margin: 0;
+  }
+  #result{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(255, 255, 255,0.9);
+  }
+  #result.hidden{
+    display:none;
   }
   </style>
   <template id='tile-template'>
@@ -74,16 +90,22 @@ template.innerHTML = `
     </my-flipping-tile>
   </template>
   <div>
-  <button id='large'>Large</button>  
-  <button id='medium'>Medium</button>  
-  <button id='small'>Small</button>  
+  <h3 id='timer'></h3>
   </div>
   <div id='game-board'>
   </div>
-  <h1 id='timer'></h1>
-  <h2 id='score'></h2>
-  <button id='playAgain'>Play again</button>  
-
+  <button id='changeOptions'>change options</button>
+  <div id='result'>
+    <h3>Choose size:(Large is default)</h3>
+    <div>
+      <button id='large'>Large</button>  
+      <button id='medium'>Medium</button>  
+      <button id='small'>Small</button> 
+    </div> 
+    <h3 id='score'></h3>
+    <h3 id='totalTime'></h3>
+    <button id='playAgain'>Play</button>  
+  </div>
 `
 
 /*
@@ -116,6 +138,9 @@ customElements.define('my-memory-game',
       this._mediumBtn = this.shadowRoot.querySelector('#medium')
       this._smallBtn = this.shadowRoot.querySelector('#small')
       this._timer = this.shadowRoot.querySelector('#timer')
+      this._totalTime = this.shadowRoot.querySelector('#totalTime')
+      this._resultDiv = this.shadowRoot.querySelector('#result')
+      this._changeOptions = this.shadowRoot.querySelector('#changeOptions')
       this._count = 0
       this._timeoutId = null
     }
@@ -151,7 +176,6 @@ customElements.define('my-memory-game',
      * Called after the element is inserted into the DOM.
      */
     connectedCallback () {
-      this._countDown()
       // if boardsize attribute is not specified give it the value large
       if (!this.hasAttribute('boardsize')) {
         this.setAttribute('boardsize', 'large')
@@ -170,6 +194,7 @@ customElements.define('my-memory-game',
       this._largeBtn.addEventListener('click', this._clickLargeBtn.bind(this))
       this._mediumBtn.addEventListener('click', this._clickMediumBtn.bind(this))
       this._smallBtn.addEventListener('click', this._clickSmallBtn.bind(this))
+      this._changeOptions.addEventListener('click', this._changeOptionsClick.bind(this))
     }
 
     /**
@@ -200,6 +225,7 @@ customElements.define('my-memory-game',
       this._largeBtn.removeEventListener('click', this._clickLargeBtn)
       this._mediumBtn.removeEventListener('click', this._clickMediumBtn)
       this._smallBtn.removeEventListener('click', this._clickSmallBtn)
+      this._changeOptions.removeEventListener('click', this._changeOptionsClick)
     }
 
     /**
@@ -381,8 +407,10 @@ customElements.define('my-memory-game',
      * @param {CustomEvent} event - The custom event.
      */
     _onGameOver (event) {
-      this._scoreBoard.textContent = `Your number of attempts: ${this._attempts}`
+      this._scoreBoard.textContent = `Attempts: ${this._attempts}`
       clearTimeout(this._timeoutId)
+      this._totalTime.textContent = `Total time is: ${this._count}s`
+      this._resultDiv.classList.remove('hidden')
     }
 
     /**
@@ -409,8 +437,12 @@ customElements.define('my-memory-game',
      * @param {MouseEvent} event - The custom event.
      */
     _handlePlayAgain (event) {
+      // clear the old timeout
+      clearTimeout(this._timeoutId)
+      this._resultDiv.classList.add('hidden')
       this._attempts = 0
       this._count = 0
+      this._countDown()
       this._scoreBoard.textContent = ''
       const tiles = this._tiles
       const tilesToEnable = Array.from(tiles.all)
@@ -455,10 +487,19 @@ customElements.define('my-memory-game',
      */
     _countDown () {
       this._timeoutId = setTimeout(() => {
-        this._timer.textContent = 'Total time: ' + this._count
         this._count++
+        this._timer.textContent = 'Total time: ' + this._count
+
         this._countDown()
       }, 1000)
+    }
+
+    /**
+     * Handle clicking on Change Options button.
+     */
+    _changeOptionsClick () {
+      this._resultDiv.classList.remove('hidden')
+      clearTimeout(this._timeoutId)
     }
   }
 
