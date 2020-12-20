@@ -93,14 +93,26 @@ template.innerHTML = `
    
       <div id='submitArea'>
         <div id='emojiContainer' class='hide'>
-         <button id='emojiBtn1' class='emoji'>😂</button>
-         <button id='emojiBtn2' class='emoji'>😉</button>
-         <button id='emojiBtn3' class='emoji'>🤪</button>
-         <button id='emojiBtn4' class='emoji'>😴</button>
-         <button id='emojiBtn5' class='emoji'>😟</button>
-         <button id='emojiBtn6' class='emoji'>😨</button>
-         <button id='emojiBtn7' class='emoji'>👍</button>
-         <button id='emojiBtn7' class='emoji'>😍</button>
+         <button class='emoji'>😂</button>
+         <button class='emoji'>😉</button>
+         <button class='emoji'>🤪</button>
+         <button class='emoji'>😴</button>
+         <button class='emoji'>😟</button>
+         <button class='emoji'>😨</button>
+         <button class='emoji'>👍</button>
+         <button class='emoji'>😍</button>
+         <button class='emoji'>😑</button>
+         <button class='emoji'>🥵</button>
+         <button class='emoji'>🤓</button>
+         <button class='emoji'>😱</button>
+         <button class='emoji'>👿</button>
+         <button class='emoji'>💀</button>
+         <button class='emoji'>🤏</button>
+         <button class='emoji'>👎</button>
+         <button class='emoji'>🍪</button>
+         <button class='emoji'>🙊</button>
+         <button class='emoji'>🎄</button>
+         <button class='emoji'>❤️</button>
         </div>
         <button id='emojiBtn'>😍</button>
         <textarea id='typeArea'></textarea>
@@ -175,7 +187,7 @@ customElements.define('my-chat-app',
       // random a number between 0 and 100
       this._randomId = Math.floor(Math.random() * (100 - 0 + 1)) + 0
       this._emojiBtn.addEventListener('click', this._toggleShowEmojis.bind(this))
-      const emojis = Array.from(this._emojis).map(emoji => {
+      Array.from(this._emojis).map(emoji => {
         return emoji.addEventListener('click', this._enterEmoji.bind(this))
       })
     }
@@ -190,6 +202,9 @@ customElements.define('my-chat-app',
       this._webSocket.close()
       clearTimeout(this._timeoutId)
       this._emojiBtn.removeEventListener('click', this._toggleShowEmojis.bind(this))
+      Array.from(this._emojis).map(emoji => {
+        return emoji.removeEventListener('click', this._enterEmoji)
+      })
     }
 
     /**
@@ -260,7 +275,7 @@ customElements.define('my-chat-app',
     }
 
     /**
-     *
+     * 
      */
     _listenToMessages () {
       console.log('You are connected to the server using websocket!, now you can send and recieve messages.')
@@ -270,7 +285,7 @@ customElements.define('my-chat-app',
     }
 
     /**
-     *
+     * Handle errors related to websocket.
      */
     _handleError () {
       console.error('Faild connecting to the server using websocket!,try to connect in 10sec')
@@ -283,17 +298,18 @@ customElements.define('my-chat-app',
     }
 
     /**
-     *
+     * Toggle showing the emojis.
      */
     _toggleShowEmojis () {
       this._emojiContainer.classList.toggle('hide')
     }
 
     /**
-     * @param event
+     *  Handle clicking on an emoji by adding it to the value of the textarea.
+     *
+     * @param {MouseEvent} event - click event fired when clicking on an emoji.
      */
     _enterEmoji (event) {
-      console.log(event.target.textContent)
       this._typeArea.value += event.target.textContent
     }
   })
