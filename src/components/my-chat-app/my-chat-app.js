@@ -26,6 +26,24 @@ template.innerHTML = `
       height:400px;
       overflow: auto;
     }
+    #emojiContainer{
+      background-color: rgba(233, 174, 107,0.5);
+      position:absolute;
+      left:0;
+      top:-30px;
+      width:100%; 
+      height:30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap:4px;
+      flex-wrap: wrap;
+      overflow: auto;
+    }
+    .emoji,#emojiBtn{
+      background-color: rgba(233, 174, 107,0.1);
+      border:none
+    }
     #submitArea{
       position:sticky;
       left:0;
@@ -47,7 +65,7 @@ template.innerHTML = `
     small{
       color:red
     }
-    small.hide{
+    small.hide, div#emojiContainer.hide{
       display: none;
     }
     my-nickname{
@@ -72,9 +90,21 @@ template.innerHTML = `
   <div id='chatContainer'>
     <div id='messagesArea'>
     </div>
+   
       <div id='submitArea'>
-         <textarea id='typeArea'></textarea>
-         <button id='submitBtn'>send</button>
+        <div id='emojiContainer' class='hide'>
+         <button id='emojiBtn1' class='emoji'>😂</button>
+         <button id='emojiBtn2' class='emoji'>😉</button>
+         <button id='emojiBtn3' class='emoji'>🤪</button>
+         <button id='emojiBtn4' class='emoji'>😴</button>
+         <button id='emojiBtn5' class='emoji'>😟</button>
+         <button id='emojiBtn6' class='emoji'>😨</button>
+         <button id='emojiBtn7' class='emoji'>👍</button>
+         <button id='emojiBtn7' class='emoji'>😍</button>
+        </div>
+        <button id='emojiBtn'>😍</button>
+        <textarea id='typeArea'></textarea>
+        <button id='submitBtn'>send</button>
       </div>
       <small id='notConnectedMessage' class='hide'>You will be able to send messages again as soon as you are connected to the server!</small>
   </div>
@@ -103,6 +133,9 @@ customElements.define('my-chat-app',
       this._submitBtn = this.shadowRoot.querySelector('#submitBtn')
       this._messagesArea = this.shadowRoot.querySelector('#messagesArea')
       this._notConnectedMessage = this.shadowRoot.querySelector('#notConnectedMessage')
+      this._emojiBtn = this.shadowRoot.querySelector('#emojiBtn')
+      this._emojiContainer = this.shadowRoot.querySelector('#emojiContainer')
+      this._emojis = this.shadowRoot.querySelectorAll('.emoji')
       this._webSocket = null
       this._randomId = null
       this._timeoutId = null
@@ -141,6 +174,10 @@ customElements.define('my-chat-app',
       this._submitBtn.addEventListener('click', this._sendMessage.bind(this))
       // random a number between 0 and 100
       this._randomId = Math.floor(Math.random() * (100 - 0 + 1)) + 0
+      this._emojiBtn.addEventListener('click', this._toggleShowEmojis.bind(this))
+      const emojis = Array.from(this._emojis).map(emoji => {
+        return emoji.addEventListener('click', this._enterEmoji.bind(this))
+      })
     }
 
     /**
@@ -152,6 +189,7 @@ customElements.define('my-chat-app',
       // closing the websocket when removing the component
       this._webSocket.close()
       clearTimeout(this._timeoutId)
+      this._emojiBtn.removeEventListener('click', this._toggleShowEmojis.bind(this))
     }
 
     /**
@@ -242,5 +280,20 @@ customElements.define('my-chat-app',
       this._timeoutId = setTimeout(() => {
         this._connect()
       }, 10000)
+    }
+
+    /**
+     *
+     */
+    _toggleShowEmojis () {
+      this._emojiContainer.classList.toggle('hide')
+    }
+
+    /**
+     * @param event
+     */
+    _enterEmoji (event) {
+      console.log(event.target.textContent)
+      this._typeArea.value += event.target.textContent
     }
   })
