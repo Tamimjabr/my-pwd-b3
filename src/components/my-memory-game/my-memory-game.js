@@ -59,6 +59,7 @@ template.innerHTML = `
     border-radius:10px;
     outline: none;
     color:black;
+    user-select: none;
   }
   button:focus{
     color:#70af85;
@@ -74,7 +75,7 @@ template.innerHTML = `
     justify-content: center;
     align-items: center;
     position: absolute;
-    top: 0;
+    top: 22px;
     left: 0;
     bottom: 0;
     right: 0;

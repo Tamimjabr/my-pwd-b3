@@ -48,17 +48,18 @@ template.innerHTML = `
     button{
       height: 100%;
       margin-left: 10px;
-      border-radius: 5px;
+      border:none;
       user-select: none;
-      background-color:#adce74;  
+      background-color:rgba(196, 182, 182,0.8);  
+      font-size: 1.4rem;
     }
   </style>
   <div id='desktop'>
    <my-window-com><my-memory-game></my-memory-game></my-window-com>
    <div id='desktopBar'>
-   <button id="memoryBtn">Memory</button>
-   <button id="chattBtn"> Chatt</button>
-   <button id="TicBtn"> TicTacToe</button>
+   <button id="memoryBtn">🧠</button>
+   <button id="chattBtn">💬</button>
+   <button id="TicBtn">❌⭕</button>
    </div>
   </div>
 `
