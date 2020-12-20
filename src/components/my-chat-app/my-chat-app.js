@@ -32,12 +32,12 @@ template.innerHTML = `
       overflow: auto;
     }
     #emojiContainer{
-      background-color: rgba(233, 174, 107,0.5);
+      background-color: rgba(233, 174, 107,0.8);
       position:absolute;
       left:0;
-      top:-30px;
+      top:-40px;
       width:100%; 
-      height:30px;
+      height:40px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -65,7 +65,7 @@ template.innerHTML = `
     }
     p{
       margin-top: 0;
-      word-break: break-all;
+      word-break: break-word;
     }
     small{
       color:red
