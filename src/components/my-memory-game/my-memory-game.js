@@ -64,6 +64,9 @@ template.innerHTML = `
     color:green;
     background-color:white;
   }
+  h1{
+    text-align: center;
+  }
   </style>
   <template id='tile-template'>
     <my-flipping-tile>
@@ -77,8 +80,10 @@ template.innerHTML = `
   </div>
   <div id='game-board'>
   </div>
-  <button id='playAgain'>Play again</button>  
+  <h1 id='timer'></h1>
   <h2 id='score'></h2>
+  <button id='playAgain'>Play again</button>  
+
 `
 
 /*
@@ -110,6 +115,9 @@ customElements.define('my-memory-game',
       this._largeBtn = this.shadowRoot.querySelector('#large')
       this._mediumBtn = this.shadowRoot.querySelector('#medium')
       this._smallBtn = this.shadowRoot.querySelector('#small')
+      this._timer = this.shadowRoot.querySelector('#timer')
+      this._count = 0
+      this._timeoutId = null
     }
 
     /**
@@ -143,6 +151,7 @@ customElements.define('my-memory-game',
      * Called after the element is inserted into the DOM.
      */
     connectedCallback () {
+      this._countDown()
       // if boardsize attribute is not specified give it the value large
       if (!this.hasAttribute('boardsize')) {
         this.setAttribute('boardsize', 'large')
@@ -173,6 +182,7 @@ customElements.define('my-memory-game',
     attributeChangedCallback (name, oldValue, newValue) {
       if (name === 'boardsize') {
         this._attempts = 0
+        this._count = 0
         this._init()
       }
     }
@@ -372,6 +382,7 @@ customElements.define('my-memory-game',
      */
     _onGameOver (event) {
       this._scoreBoard.textContent = `Your number of attempts: ${this._attempts}`
+      clearTimeout(this._timeoutId)
     }
 
     /**
@@ -399,6 +410,7 @@ customElements.define('my-memory-game',
      */
     _handlePlayAgain (event) {
       this._attempts = 0
+      this._count = 0
       this._scoreBoard.textContent = ''
       const tiles = this._tiles
       const tilesToEnable = Array.from(tiles.all)
@@ -435,6 +447,18 @@ customElements.define('my-memory-game',
      */
     _clickSmallBtn (event) {
       this.setAttribute('boardsize', 'small')
+    }
+
+    /**
+     * The method is responsible for incrementing the total time , decrementing the time limit for the given question.
+     *
+     */
+    _countDown () {
+      this._timeoutId = setTimeout(() => {
+        this._timer.textContent = 'Total time: ' + this._count
+        this._count++
+        this._countDown()
+      }, 1000)
     }
   }
 
