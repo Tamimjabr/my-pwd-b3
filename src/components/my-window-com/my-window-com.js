@@ -107,7 +107,7 @@ customElements.define(
      * Called after the element has been removed from the DOM.
      */
     disconnectedCallback () {
-
+      this._closeBtn.removeEventListener('click', this._handleCloseBtn)
     }
 
     /**
@@ -124,39 +124,28 @@ customElements.define(
 
     /**
      * @param elmnt
+     * @param e
      */
     _dragElement (elmnt) {
-      let pos1 = 0
-      let pos2 = 0
-      let pos3 = 0
-      let pos4 = 0
-      // todo has changed
-      if (this.shadowRoot.querySelector('#toolBar')) {
-        // if present, the header is where you move the DIV from:
-        this.shadowRoot.querySelector('#toolBar').onmousedown = dragMouseDown
-      } else {
-        // otherwise, move the DIV from anywhere inside the DIV:
-        elmnt.onmousedown = dragMouseDown
-      }
-
       /**
        * @param e
        */
-      function dragMouseDown (e) {
+      const dragMouseDown = (e) => {
         e = e || window.event
         e.preventDefault()
         // get the mouse cursor position at startup:
         pos3 = e.clientX
         pos4 = e.clientY
-        document.onmouseup = closeDragElement
+
+        document.addEventListener('mouseup', closeDragElement)
         // call a function whenever the cursor moves:
-        document.onmousemove = elementDrag
+        document.addEventListener('mousemove', elementDrag)
       }
+
       /**
        * @param e
        */
-      function elementDrag (e) {
-        e = e || window.event
+      const elementDrag = (e) => {
         e.preventDefault()
         // calculate the new cursor position:
         pos1 = pos3 - e.clientX
@@ -183,12 +172,24 @@ customElements.define(
       }
 
       /**
-       *
+       * @param e
        */
-      function closeDragElement () {
+      const closeDragElement = (e) => {
         // stop moving when mouse button is released:
-        document.onmouseup = null
-        document.onmousemove = null
+        document.removeEventListener('mouseup', closeDragElement)
+        document.removeEventListener('mousemove', elementDrag)
+      }
+      let pos1 = 0
+      let pos2 = 0
+      let pos3 = 0
+      let pos4 = 0
+      // todo has changed
+      if (elmnt.shadowRoot.querySelector('#toolBar')) {
+        // if present, the header is where you move the DIV from:
+        elmnt.shadowRoot.querySelector('#toolBar').addEventListener('mousedown', dragMouseDown.bind(this))
+      } else {
+        // otherwise, move the DIV from anywhere inside the DIV:
+        elmnt.addEventListener('mousedown', dragMouseDown.bind(this))
       }
     }
   }

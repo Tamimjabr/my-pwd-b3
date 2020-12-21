@@ -299,7 +299,8 @@ customElements.define('my-chat-app',
         message.style.color = 'green'
         messageContainer.style.textAlign = 'right'
       } else {
-        this._messageSound.play()
+        //! remove comment to activate
+       // this._messageSound.play()
       }
       message.textContent = data.username + ' : ' + data.data
 
