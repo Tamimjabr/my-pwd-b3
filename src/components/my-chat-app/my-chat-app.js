@@ -8,6 +8,9 @@
 /**
  * Define template.
  */
+
+import src from './sounds/bling.mp3'
+
 const template = document.createElement('template')
 template.innerHTML = `
   <style>
@@ -175,6 +178,7 @@ customElements.define('my-chat-app',
       this._webSocket = null
       this._randomId = null
       this._timeoutId = null
+      this._messageSound = null
     }
 
     /**
@@ -215,6 +219,9 @@ customElements.define('my-chat-app',
         return emoji.addEventListener('click', this._enterEmoji.bind(this))
       })
       this._changeNameBtn.addEventListener('click', this._changeUsername.bind(this))
+
+      this._messageSound = document.createElement('audio')
+      this._messageSound.src = src
     }
 
     /**
@@ -291,6 +298,8 @@ customElements.define('my-chat-app',
         data.username = 'You'
         message.style.color = 'green'
         messageContainer.style.textAlign = 'right'
+      } else {
+        this._messageSound.play()
       }
       message.textContent = data.username + ' : ' + data.data
 
