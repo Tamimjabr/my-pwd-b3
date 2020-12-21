@@ -37,6 +37,11 @@ template.innerHTML = `
     #messagesArea div{
       margin:0 10px;
       font-family: Arial, Helvetica, sans-serif;
+      background-color:rgb(255, 255, 255);
+      border-radius: 20px;
+      padding:0 30px;
+      width: auto;
+      display: block;
     }
     #emojiContainer{
       background-color: rgba(233, 174, 107,0.8);
