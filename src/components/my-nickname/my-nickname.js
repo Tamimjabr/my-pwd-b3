@@ -59,7 +59,7 @@ customElements.define('my-nickname',
      *
      */
     static get observedAttributes () {
-      return ['username', 'changer']
+      return ['username']
     }
 
     /**
@@ -80,23 +80,6 @@ customElements.define('my-nickname',
     }
 
     /**
-     * Called when observed attribute(s) changes.
-     *
-     * @param {string} name - The attribute's name.
-     * @param {*} oldValue - The old value.
-     * @param {*} newValue - The new value.
-     */
-    attributeChangedCallback (name, oldValue, newValue) {
-      if (name === 'username') {
-        this._formElement.classList.add('hidden')
-      }
-      //! check if it will a boolean
-      if (name === 'changer') {
-        this._formElement.classList.remove('hidden')
-      }
-    }
-
-    /**
      * To handle submitting the form by removing the input and display the nickname.
      *
      * @param {Event} event - The submit event.
@@ -104,7 +87,6 @@ customElements.define('my-nickname',
     _onSubmit (event) {
       event.preventDefault()
       if (this._nameInput.value.trim()) {
-        this._formElement.classList.add('hidden')
         this.setAttribute('username', this._nameInput.value.trim())
         localStorage.setItem('chat_app_username', this._nameInput.value)
         this.classList.add('hidden')

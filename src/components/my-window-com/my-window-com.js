@@ -38,6 +38,10 @@ template.innerHTML = `
   justify-content: center;
   align-items: center;
 }
+#close{
+  color:red;
+  border-radius: 50%;
+}
 </style>
 
 <div id="window">

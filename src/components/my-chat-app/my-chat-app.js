@@ -237,6 +237,7 @@ customElements.define('my-chat-app',
       Array.from(this._emojis).map(emoji => {
         return emoji.removeEventListener('click', this._enterEmoji)
       })
+      this._changeNameBtn.removeEventListener('click', this._changeUsername)
     }
 
     /**
@@ -300,7 +301,7 @@ customElements.define('my-chat-app',
         messageContainer.style.textAlign = 'right'
       } else {
         //! remove comment to activate
-       // this._messageSound.play()
+        // this._messageSound.play()
       }
       message.textContent = data.username + ' : ' + data.data
 
