@@ -140,7 +140,7 @@ customElements.define(
         // get the mouse cursor position at startup:
         pos3 = e.clientX
         pos4 = e.clientY
-        this.style.cursor = 'move'
+        document.body.style.cursor = 'none'
 
         document.addEventListener('mouseup', closeDragElement)
         // call a function whenever the cursor moves:
@@ -181,7 +181,7 @@ customElements.define(
        */
       const closeDragElement = (e) => {
         // stop moving when mouse button is released:
-        this.style.cursor = 'default'
+        document.body.style.cursor = 'default'
         document.removeEventListener('mouseup', closeDragElement)
         document.removeEventListener('mousemove', elementDrag)
       }
