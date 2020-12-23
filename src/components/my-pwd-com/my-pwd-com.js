@@ -165,7 +165,8 @@ customElements.define('my-pwd-com',
      * @param {MouseEvent} event - click event.
      */
     _handleFocus (event) {
-      event.target.style.zIndex = this._topWindowZ
+      // Bring the window to the top regardless if we click on it or on another element in it.
+      event.target.closest('my-window-com').style.zIndex = this._topWindowZ
       this._topWindowZ++
     }
 
