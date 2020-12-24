@@ -14,6 +14,9 @@ import moment from 'moment'
 
 moment.locale('sv')
 
+const messageSound = document.createElement('audio')
+messageSound.src = src
+
 const template = document.createElement('template')
 template.innerHTML = `
   <style>
@@ -183,31 +186,6 @@ customElements.define('my-chat-app',
       this._webSocket = null
       this._randomId = null
       this._timeoutId = null
-      this._messageSound = null
-    }
-
-    /**
-     * Watches the attributes "text" and "speed" for changes on the element.
-     *
-     * @returns {string[]} A string array of attributes to monitor.
-     */
-
-    /**
-     *
-     */
-    static get observedAttributes () {
-
-    }
-
-    /**
-     * Called by the browser engine when an attribute changes.
-     *
-     * @param {string} name of the attribute.
-     * @param {any} oldValue the old attribute value.
-     * @param {any} newValue the new attribute value.
-     */
-    attributeChangedCallback (name, oldValue, newValue) {
-
     }
 
     /**
@@ -217,42 +195,42 @@ customElements.define('my-chat-app',
       this._connect()
       this._typeArea.addEventListener('keydown', this._sendMessage.bind(this))
       this._submitBtn.addEventListener('click', this._sendMessage.bind(this))
+      this._changeNameBtn.addEventListener('click', this._changeUsername.bind(this))
+      this._positionBtn.addEventListener('click', this._handleClickPosition.bind(this))
       // random a number between 0 and 100
       this._randomId = Math.floor(Math.random() * (100 - 0 + 1)) + 0
       this._emojiBtn.addEventListener('click', this._toggleShowEmojis.bind(this))
       Array.from(this._emojis).map(emoji => {
         return emoji.addEventListener('click', this._enterEmoji.bind(this))
       })
-      this._changeNameBtn.addEventListener('click', this._changeUsername.bind(this))
-
-      this._messageSound = document.createElement('audio')
-      this._messageSound.src = src
-      this._positionBtn.addEventListener('click', this._handleClickPosition.bind(this))
     }
 
     /**
      * Called after the element has been removed from the DOM.
      */
     disconnectedCallback () {
-      this._typeArea.removeEventListener('keydown', this._sendMessage)
-      this._submitBtn.removeEventListener('click', this._sendMessage)
       // closing the websocket when removing the component
       this._webSocket.close()
-      clearTimeout(this._timeoutId)
+      this._typeArea.removeEventListener('keydown', this._sendMessage)
+      this._submitBtn.removeEventListener('click', this._sendMessage)
+      this._changeNameBtn.removeEventListener('click', this._changeUsername)
+      this._positionBtn.removeEventListener('click', this._handleClickPosition)
+
       this._emojiBtn.removeEventListener('click', this._toggleShowEmojis.bind(this))
       Array.from(this._emojis).map(emoji => {
         return emoji.removeEventListener('click', this._enterEmoji)
       })
-      this._changeNameBtn.removeEventListener('click', this._changeUsername)
+
+      clearTimeout(this._timeoutId)
     }
 
     /**
+     * Connect to the server using websocket.
      *
      */
     async _connect () {
       // check if we already have a webSocket connection before creating a new one
       if (this._webSocket && this._webSocket.readyState === 1) {
-        console.log('#########', this._webSocket.readyState)
         console.log('a websocket is already existed')
       } else {
         this._webSocket = await new WebSocket('wss://cscloud6-127.lnu.se/socket/')
@@ -265,7 +243,10 @@ customElements.define('my-chat-app',
     }
 
     /**
-     * @param event
+     * Send Message using websocket.
+     *
+     * @param {MouseEvent|KeyboardEvent} event -the event fired when clicking on the send button
+     * or a key is pressed in typeArea.
      */
     _sendMessage (event) {
       // enable user to send message by clicking on send button or pressing Enter
@@ -292,43 +273,50 @@ customElements.define('my-chat-app',
     }
 
     /**
-     * @param event
+     * Display messages in the messagesArea.
+     *
+     * @param {WebSocket} event - the event fired when getting a message through websocket.
+     *
      */
     _displayReceivedMessage (event) {
-      console.log(event)
-      const data = JSON.parse(event.data)
-      // todo check if the data.type is message and not heartbeat
-      const fragment = document.createDocumentFragment()
-      const messageContainer = document.createElement('div')
-      const message = document.createElement('p')
-      const currentTime = document.createElement('small')
-      currentTime.textContent = moment().format('HH:mm:ss')
+      // check if it is the heartbeat from the server holding the connection open
+      if (event.type === 'heartbeat') {
+        console.log(`${event.type}, holding the connectiong through websocket`)
+      } else if (event.type === 'message') {
+        const data = JSON.parse(event.data)
+        // todo check if the data.type is message and not heartbeat
+        const fragment = document.createDocumentFragment()
+        const messageContainer = document.createElement('div')
+        const message = document.createElement('p')
+        const currentTime = document.createElement('small')
+        currentTime.textContent = moment().format('HH:mm:ss')
 
-      if (data.userIdentifier === this._randomId) {
-        data.username = 'You'
-        message.style.color = 'green'
-        messageContainer.style.textAlign = 'right'
-      } else {
-        //! remove comment to activate
-        // this._messageSound.play()
+        if (data.userIdentifier === this._randomId) {
+          data.username = 'You'
+          message.style.color = 'green'
+          messageContainer.style.textAlign = 'right'
+        } else {
+          // add a sound when getting messages.
+          //! remove comment to activate
+          messageSound.play()
+        }
+        message.textContent = data.username + ' : ' + data.data
+        messageContainer.appendChild(message)
+        messageContainer.appendChild(currentTime)
+        fragment.appendChild(messageContainer)
+        this._messagesArea.appendChild(fragment)
+        // scroll to the last message
+        this._messagesArea.scrollTop = this._messagesArea.scrollHeight
       }
-      message.textContent = data.username + ' : ' + data.data
-
-      messageContainer.appendChild(message)
-      messageContainer.appendChild(currentTime)
-      fragment.appendChild(messageContainer)
-      this._messagesArea.appendChild(fragment)
-
-      // scroll to the last message
-      this._messagesArea.scrollTop = this._messagesArea.scrollHeight
     }
 
     /**
-     *
+     * Listen to messages when connecting to the server using websocket.
      */
     _listenToMessages () {
       console.log('You are connected to the server using websocket!, now you can send and recieve messages.')
       this._webSocket.addEventListener('message', this._displayReceivedMessage.bind(this))
+      // todo to check when implementing PWA
       this._notConnectedMessage.classList.add('hide')
       this._typeArea.removeAttribute('disabled')
     }
@@ -354,7 +342,7 @@ customElements.define('my-chat-app',
     }
 
     /**
-     *  Handle clicking on an emoji by adding it to the value of the textarea.
+     * Handle clicking on an emoji by adding it to the value of the textarea.
      *
      * @param {MouseEvent} event - click event fired when clicking on an emoji.
      */
@@ -372,14 +360,14 @@ customElements.define('my-chat-app',
     }
 
     /**
+     * Get the current position using geolocation APi and send it as text message through websocket.
      *
      */
     async _handleClickPosition () {
       navigator.geolocation.getCurrentPosition(async position => {
-        console.log(position)
         const result = await this._getCityAndCountry(position)
         const myPosition = `My location is ${result.city}, ${result.country}`
-        console.log(myPosition)
+
         if (result.city === undefined || result.country === undefined) {
           console.error('too many location request')
         } else {
@@ -395,14 +383,13 @@ customElements.define('my-chat-app',
           }
           this._webSocket.send(JSON.stringify(data))
         }
-        // connect to websocket
       }, err => {
         console.log(err)
       }, { timeout: 5000, enableHighAccuracy: true })
     }
 
     /**
-     * Reverse Geocode through convert the latitude and longitude to the address.
+     * Reverse Geocode through convert the latitude and longitude to the address using Geocode.xyz API.
      *
      * @param {object} position - the object containing the latitude and longitude.
      * @returns {Promise<object>} A Promise that resolves to a JavaScript object.
