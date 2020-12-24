@@ -5,6 +5,9 @@
  * @version 1.0.0
  */
 
+import moment from 'moment'
+
+moment.locale('sv')
 // Photo by RetroSupply on Unsplash
 const backgroundURL = (new URL('images/background.jpg', import.meta.url)).href
 
@@ -53,6 +56,16 @@ template.innerHTML = `
       background-color:rgba(196, 182, 182,0.8);  
       font-size: 1.4rem;
     }
+    #timeDiv{
+      color: white;
+      background-color: rgb(97, 91, 91);
+      padding:0 10px;
+      margin-left: auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
   </style>
   <div id='desktop'>
    <my-window-com><my-chat-app></my-chat-app></my-window-com>
@@ -60,6 +73,11 @@ template.innerHTML = `
    <button id="memoryBtn">🧠</button>
    <button id="chattBtn">💬</button>
    <button id="TicBtn">❌⭕</button>
+   <div id='timeDiv'>
+    <time id='time'></time>
+    <time id='date'></time>
+   </div>
+  
    </div>
   </div>
 `
@@ -86,10 +104,13 @@ customElements.define('my-pwd-com',
       this._memoryBtn = this.shadowRoot.querySelector('#memoryBtn')
       this._chattBtn = this.shadowRoot.querySelector('#chattBtn')
       this._ticBtn = this.shadowRoot.querySelector('#TicBtn')
+      this._time = this.shadowRoot.querySelector('#time')
+      this._date = this.shadowRoot.querySelector('#date')
 
       this._topWindowZ = 2
       this._top = 50
       this._left = 50
+      this._timeoutId = null
     }
 
     /**
@@ -120,14 +141,18 @@ customElements.define('my-pwd-com',
       this._desktop.addEventListener('closewindow', this._handleClosingWindow.bind(this))
       this._ticBtn.addEventListener('click', this._ticBtnClick.bind(this))
       this._chattBtn.addEventListener('click', this._chattBtnClick.bind(this))
+      this._timeUpdate()
     }
 
     /**
      * Called after the element has been removed from the DOM.
      */
     disconnectedCallback () {
-      // todo remove eventlisteners
-
+      this._memoryBtn.removeEventListener('click', this._memoryBtnClick)
+      this._desktop.removeEventListener('closewindow', this._handleClosingWindow)
+      this._ticBtn.removeEventListener('click', this._ticBtnClick)
+      this._chattBtn.removeEventListener('click', this._chattBtnClick)
+      clearTimeout(this._timeoutId)
     }
 
     /**
@@ -199,6 +224,17 @@ customElements.define('my-pwd-com',
      */
     _chattBtnClick () {
       this._createWindow('my-chat-app')
+    }
+
+    /**
+     *
+     */
+    _timeUpdate () {
+      this._timeoutId = setTimeout(() => {
+        this._time.textContent = moment().format('HH:mm:ss')
+        this._date.textContent = moment().format('YYYY/M/D')
+        this._timeUpdate()
+      }, 1000)
     }
   }
 )

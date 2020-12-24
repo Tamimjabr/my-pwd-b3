@@ -10,6 +10,9 @@
  */
 
 import src from './sounds/bling.mp3'
+import moment from 'moment'
+
+moment.locale('sv')
 
 const template = document.createElement('template')
 template.innerHTML = `
@@ -38,7 +41,7 @@ template.innerHTML = `
       overflow: auto;
     }
     #messagesArea div{
-      margin:0 10px;
+      margin:5px 10px;
       font-family: Arial, Helvetica, sans-serif;
       background-color:rgb(255, 255, 255);
       border-radius: 20px;
@@ -79,11 +82,11 @@ template.innerHTML = `
       width:90%; 
     }
     p{
-      margin-top: 0;
+      margin:0;
       word-break: break-word;
     }
     small{
-      color:red
+      color:black;
     }
     small.hide, div#emojiContainer.hide{
       display: none;
@@ -295,6 +298,9 @@ customElements.define('my-chat-app',
       const fragment = document.createDocumentFragment()
       const messageContainer = document.createElement('div')
       const message = document.createElement('p')
+      const currentTime = document.createElement('small')
+      currentTime.textContent = moment().format('HH:mm:ss')
+
       if (data.userIdentifier === this._randomId) {
         data.username = 'You'
         message.style.color = 'green'
@@ -306,6 +312,7 @@ customElements.define('my-chat-app',
       message.textContent = data.username + ' : ' + data.data
 
       messageContainer.appendChild(message)
+      messageContainer.appendChild(currentTime)
       fragment.appendChild(messageContainer)
       this._messagesArea.appendChild(fragment)
 
