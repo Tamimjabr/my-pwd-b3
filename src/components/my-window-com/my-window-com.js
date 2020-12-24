@@ -11,6 +11,10 @@
 const template = document.createElement('template')
 template.innerHTML = `
 <style>
+:host{
+  width: 350px;
+  height: 500px;
+}
 #window{
   width: 350px;
   height: 500px;
@@ -111,10 +115,10 @@ customElements.define(
      * @param {object} elmnt - the object representing the element that we want to be draggable.
      */
     _dragElement (elmnt) {
-      let pos1 = 0
-      let pos2 = 0
-      let pos3 = 0
-      let pos4 = 0
+      let aX = 0
+      let aY = 0
+      let posX = 0
+      let posY = 0
       /**
        * Adding the event on mousemove and mouseup.
        *
@@ -124,9 +128,9 @@ customElements.define(
         event = event || window.event
         event.preventDefault()
         // get the mouse cursor position at startup:
-        pos3 = event.clientX
-        pos4 = event.clientY
-        document.body.style.cursor = 'none'
+        posX = event.clientX
+        posY = event.clientY
+        document.body.style.cursor = 'move'
 
         document.addEventListener('mouseup', closeDragElement)
         // call a function whenever the cursor moves:
@@ -141,26 +145,30 @@ customElements.define(
       const elementDrag = (event) => {
         event.preventDefault()
         // calculate the new cursor position:
-        pos1 = pos3 - event.clientX
-        pos2 = pos4 - event.clientY
-        pos3 = event.clientX
-        pos4 = event.clientY
+        aX = posX - event.clientX
+        aY = posY - event.clientY
+        posX = event.clientX
+        posY = event.clientY
 
-        if ((elmnt.offsetTop - pos2) < 0 || (elmnt.offsetTop - pos2) > document.documentElement.clientHeight) {
-          // prevent the element from going down outside the desktop
-          elmnt.style.top = (elmnt.offsetTop - pos2) > document.documentElement.clientHeight ? (document.documentElement.clientHeight - 500) + 'px' : '0'
-          elmnt.style.left = (elmnt.offsetLeft - pos1) + 'px'
+        // prevent dragging the window outside the desktop to the left
+        if (elmnt.offsetLeft < 0) {
+          elmnt.style.top = (elmnt.offsetTop - aY) + 'px'
+          elmnt.style.left = 0 + 'px'
+        } else if (elmnt.offsetTop < 0) {
+          // prevent dragging the window outside the desktop to the top
+          elmnt.style.top = 0 + 'px'
+          elmnt.style.left = (elmnt.offsetLeft - aX) + 'px'
+        } else if (elmnt.offsetLeft + elmnt.offsetWidth > document.documentElement.clientWidth) {
+          // prevent dragging the window outside the desktop to the right
+          elmnt.style.top = (elmnt.offsetTop - aY) + 'px'
+          elmnt.style.left = (document.documentElement.clientWidth - elmnt.offsetWidth) + 'px'
+        } else if (elmnt.offsetTop + elmnt.offsetHeight > document.documentElement.clientHeight) {
+          // prevent dragging the window outside the desktop to the down
+          elmnt.style.top = (document.documentElement.clientHeight - elmnt.offsetHeight) + 'px'
+          elmnt.style.left = (elmnt.offsetLeft - aX) + 'px'
         } else {
-          elmnt.style.top = (elmnt.offsetTop - pos2) + 'px'
-          elmnt.style.left = (elmnt.offsetLeft - pos1) + 'px'
-        }
-        if ((elmnt.offsetLeft - pos1) < 0 || (elmnt.offsetLeft - pos1) > document.documentElement.clientWidth) {
-          elmnt.style.top = (elmnt.offsetTop - pos2) + 'px'
-          // prevent the element from going right outside the desktop
-          elmnt.style.left = (elmnt.offsetLeft - pos1) > document.documentElement.clientHeight ? (document.documentElement.clientWidth - 400) + 'px' : '0'
-        } else {
-          elmnt.style.top = (elmnt.offsetTop - pos2) + 'px'
-          elmnt.style.left = (elmnt.offsetLeft - pos1) + 'px'
+          elmnt.style.top = (elmnt.offsetTop - aY) + 'px'
+          elmnt.style.left = (elmnt.offsetLeft - aX) + 'px'
         }
       }
 
