@@ -114,26 +114,6 @@ customElements.define('my-pwd-com',
     }
 
     /**
-     * Watches the attributes "text" and "speed" for changes on the element.
-     *
-     * @returns {string[]} A string array of attributes to monitor.
-     */
-    static get observedAttributes () {
-      return []
-    }
-
-    /**
-     * Called by the browser engine when an attribute changes.
-     *
-     * @param {string} name of the attribute.
-     * @param {any} oldValue the old attribute value.
-     * @param {any} newValue the new attribute value.
-     */
-    attributeChangedCallback (name, oldValue, newValue) {
-
-    }
-
-    /**
      * Called after the element is inserted into the DOM.
      */
     connectedCallback () {
@@ -156,7 +136,9 @@ customElements.define('my-pwd-com',
     }
 
     /**
-     * @param component
+     * Create a new window that contains the passed parameter as slot.
+     *
+     * @param {string} component - the type of the component to create inside the window.
      */
     _createWindow (component) {
       // todo let the that take a paramater with the element name
@@ -206,28 +188,28 @@ customElements.define('my-pwd-com',
     }
 
     /**
-     *
+     * Handle click on the tictactoe game Icon.
      */
     _ticBtnClick () {
       this._createWindow('my-tic-tac-toe')
     }
 
     /**
-     *
+     * Handle click on the memory game Icon.
      */
     _memoryBtnClick () {
       this._createWindow('my-memory-game')
     }
 
     /**
-     *
+     * Handle click on the chat app Icon.
      */
     _chattBtnClick () {
       this._createWindow('my-chat-app')
     }
 
     /**
-     *
+     * Update the time and date on the desktop.
      */
     _timeUpdate () {
       this._timeoutId = setTimeout(() => {

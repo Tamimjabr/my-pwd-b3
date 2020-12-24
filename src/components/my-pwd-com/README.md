@@ -1,21 +1,5 @@
-# &lt;my-memory-game&gt;
-A web component that represents a memory game.
-
-## Attributes
-
-### `boardsize`
-
-The `boardsize` attribute, if present, specifies the size of the grid. Its value must be `large` (4x4), `medium` (4x2) or `small` (2x2).
-
-Default value: large
-
-## Events
-
-| Event Name      | Fired When                        |
-| --------------- | --------------------------------- |
-| `tilesmatch`    | The tiles facing up match.        |
-| `tilesmismatch` | The tiles facing up do not match. |
-| `gameover`      | The game is over.                 |
+# &lt;my-pwd-com&gt;
+A web component that represent a desktop with dock, icons and digital clock + date.
 
 ## Examples
 
@@ -24,24 +8,19 @@ To use:
 ## In HTML
 Add the module using the script tag in the head-element:
 ```HTML
-  <script type="module" src="js/components/my-memory-game/my-memory-game.js"></script>
+<script type="module" src="js/components/my-pwd-com/my-pwd-com.js"></script>
 ```
 
 Add the element to the html:
 ```HTML
-<my-memory-game></my-memory-game>
+<my-pwd-com></my-pwd-com>
 ```
 
 ## In Javascript
 Load the module
 ```Javascript
-import './components/my-memory-game'
+import './components/my-pwd-com'
 ```
 Create a component using the standard DOM-api:
 ```Javascript
-const memoryGame = document.createElement('my-memory-game')
-
-![Example](./.readme/example.gif)
-
-
-
+const memoryGame = document.createElement('my-pwd-com')
