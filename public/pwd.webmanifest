@@ -1,0 +1,13 @@
+{
+  "name":"PWD-APP",
+  "short_name": "PWD",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color":"#ffe001",
+   "description": "A PWD app",
+   "icons":[{
+     "src":"./images/desktop256.png",
+     "sizes": "256x256",
+     "type": "image/png"
+   }]
+}

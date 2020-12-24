@@ -23,12 +23,11 @@ template.innerHTML = `
     :host {
       width:100%;
       height:100%;
-      background:white;
     }
     #chattContainer{
       height:100%;
       width:100%; 
-      position: relative; 
+      position: relative;
     }
     #changeNameBtn{
       background-color:rgb(196, 197, 168);
@@ -40,7 +39,7 @@ template.innerHTML = `
     }
     #messagesArea{
       background:#f0e2d0;
-      height:400px;
+      min-height:440px;
       overflow: auto;
     }
     #messagesArea div{
@@ -72,6 +71,7 @@ template.innerHTML = `
       user-select: none;
     }
     #submitArea{
+      background-color: white;
       position:sticky;
       left:0;
       bottom:0;
@@ -123,7 +123,7 @@ template.innerHTML = `
     <button id='changeNameBtn'>Change nickname</button>
     <div id='messagesArea'>
     </div>
-      <div id='submitArea'>
+    <div id='submitArea'>
         <div id='emojiContainer' class='hide'>
          <button class='emoji'>😂</button>
          <button class='emoji'>😉</button>
