@@ -68,7 +68,8 @@ template.innerHTML = `
     }
     .emoji,#emojiBtn{
       background-color: rgba(233, 174, 107,0.1);
-      border:none
+      border:none;
+      user-select: none;
     }
     #submitArea{
       position:sticky;

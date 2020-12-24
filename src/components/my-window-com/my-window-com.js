@@ -53,7 +53,6 @@ template.innerHTML = `
   </div>
 </div>
 `
-
 /**
  * Define custom element.
  */
@@ -77,26 +76,6 @@ customElements.define(
       this._closeBtn = this.shadowRoot.querySelector('#close')
       this._window = this.shadowRoot.querySelector('#window')
       this._toolBar = this.shadowRoot.querySelector('#toolBar')
-    }
-
-    /**
-     * Watches the attributes "text" and "speed" for changes on the element.
-     *
-     * @returns {string[]} A string array of attributes to monitor.
-     */
-    static get observedAttributes () {
-      return []
-    }
-
-    /**
-     * Called by the browser engine when an attribute changes.
-     *
-     * @param {string} name of the attribute.
-     * @param {any} oldValue the old attribute value.
-     * @param {any} newValue the new attribute value.
-     */
-    attributeChangedCallback (name, oldValue, newValue) {
-
     }
 
     /**
@@ -127,12 +106,15 @@ customElements.define(
     }
 
     /**
-     * @param elmnt
-     * @param e
+     * Make the elmnt draggable.
+     *
+     * @param {object} elmnt - the object representing the element that we want to be draggable.
      */
     _dragElement (elmnt) {
       /**
-       * @param e
+       * Adding the event on mousemove and mouseup.
+       *
+       * @param {MouseEvent} e - event fired on mouse down.
        */
       const dragMouseDown = (e) => {
         e = e || window.event
@@ -148,7 +130,9 @@ customElements.define(
       }
 
       /**
-       * @param e
+       * Handle moving the mouse while the mouse button is down after clicking on the draggable element.
+       *
+       * @param {MouseEvent} e - event fired on mouse move.
        */
       const elementDrag = (e) => {
         e.preventDefault()
@@ -177,7 +161,9 @@ customElements.define(
       }
 
       /**
-       * @param e
+       * Handle mouse up by removing the eventlisteners.
+       *
+       * @param {MouseEvent} e - event fired on mouse up.
        */
       const closeDragElement = (e) => {
         // stop moving when mouse button is released:

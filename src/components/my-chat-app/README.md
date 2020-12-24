@@ -23,4 +23,4 @@ import './components/my-chat-app'
 ```
 Create a component using the standard DOM-api:
 ```Javascript
-const memoryGame = document.createElement('my-chat-app')
+const myChatApp = document.createElement('my-chat-app')

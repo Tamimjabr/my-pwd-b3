@@ -42,3 +42,6 @@ Create a component using the standard DOM-api:
 const memoryGame = document.createElement('my-memory-game')
 
 ![Example](./.readme/example.gif)
+
+
+
