@@ -111,17 +111,21 @@ customElements.define(
      * @param {object} elmnt - the object representing the element that we want to be draggable.
      */
     _dragElement (elmnt) {
+      let pos1 = 0
+      let pos2 = 0
+      let pos3 = 0
+      let pos4 = 0
       /**
        * Adding the event on mousemove and mouseup.
        *
-       * @param {MouseEvent} e - event fired on mouse down.
+       * @param {MouseEvent} event - event fired on mouse down.
        */
-      const dragMouseDown = (e) => {
-        e = e || window.event
-        e.preventDefault()
+      const dragMouseDown = (event) => {
+        event = event || window.event
+        event.preventDefault()
         // get the mouse cursor position at startup:
-        pos3 = e.clientX
-        pos4 = e.clientY
+        pos3 = event.clientX
+        pos4 = event.clientY
         document.body.style.cursor = 'none'
 
         document.addEventListener('mouseup', closeDragElement)
@@ -132,15 +136,15 @@ customElements.define(
       /**
        * Handle moving the mouse while the mouse button is down after clicking on the draggable element.
        *
-       * @param {MouseEvent} e - event fired on mouse move.
+       * @param {MouseEvent} event - event fired on mouse move.
        */
-      const elementDrag = (e) => {
-        e.preventDefault()
+      const elementDrag = (event) => {
+        event.preventDefault()
         // calculate the new cursor position:
-        pos1 = pos3 - e.clientX
-        pos2 = pos4 - e.clientY
-        pos3 = e.clientX
-        pos4 = e.clientY
+        pos1 = pos3 - event.clientX
+        pos2 = pos4 - event.clientY
+        pos3 = event.clientX
+        pos4 = event.clientY
 
         if ((elmnt.offsetTop - pos2) < 0 || (elmnt.offsetTop - pos2) > document.documentElement.clientHeight) {
           // prevent the element from going down outside the desktop
@@ -163,19 +167,15 @@ customElements.define(
       /**
        * Handle mouse up by removing the eventlisteners.
        *
-       * @param {MouseEvent} e - event fired on mouse up.
+       * @param {MouseEvent} event - event fired on mouse up.
        */
-      const closeDragElement = (e) => {
+      const closeDragElement = (event) => {
         // stop moving when mouse button is released:
         document.body.style.cursor = 'default'
         document.removeEventListener('mouseup', closeDragElement)
         document.removeEventListener('mousemove', elementDrag)
       }
-      let pos1 = 0
-      let pos2 = 0
-      let pos3 = 0
-      let pos4 = 0
-      // todo has changed
+
       if (elmnt.shadowRoot.querySelector('#toolBar')) {
         // if present, the header is where you move the DIV from:
         elmnt.shadowRoot.querySelector('#toolBar').addEventListener('mousedown', dragMouseDown.bind(this))

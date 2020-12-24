@@ -299,7 +299,7 @@ customElements.define('my-chat-app',
         } else {
           // add a sound when getting messages.
           //! remove comment to activate
-          messageSound.play()
+          // messageSound.play()
         }
         message.textContent = data.username + ' : ' + data.data
         messageContainer.appendChild(message)
