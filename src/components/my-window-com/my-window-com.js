@@ -40,7 +40,7 @@ template.innerHTML = `
 }
 #close{
   color:red;
-  border-radius: 50%;
+  font-weight: bolder; 
 }
 </style>
 

@@ -107,13 +107,12 @@ template.innerHTML = `
     my-nickname.hidden{
       display:none;
     }
-    #emojiBtn,#submitBtn{
+    #emojiBtn,#submitBtn,#positionBtn{
       font-size: 1.2rem;
       padding: 5px;
       background-color: rgba(255, 255, 255,0.0);
       border:none;
     }
-
   </style>
   <my-nickname id='username'></my-nickname>
   <div id='chatContainer'>
@@ -144,6 +143,7 @@ template.innerHTML = `
          <button class='emoji'>❤️</button>
         </div>
         <button id='emojiBtn'>😍</button>
+        <button id='positionBtn'>🗺️</button>
         <textarea id='typeArea' placeholder="Type your message here"></textarea>
         <button id='submitBtn'>📤</button>
       </div>
@@ -178,6 +178,8 @@ customElements.define('my-chat-app',
       this._emojiBtn = this.shadowRoot.querySelector('#emojiBtn')
       this._emojiContainer = this.shadowRoot.querySelector('#emojiContainer')
       this._emojis = this.shadowRoot.querySelectorAll('.emoji')
+      this._positionBtn = this.shadowRoot.querySelector('#positionBtn')
+
       this._webSocket = null
       this._randomId = null
       this._timeoutId = null
@@ -225,6 +227,7 @@ customElements.define('my-chat-app',
 
       this._messageSound = document.createElement('audio')
       this._messageSound.src = src
+      this._positionBtn.addEventListener('click', this._handleClickPosition.bind(this))
     }
 
     /**
@@ -366,5 +369,52 @@ customElements.define('my-chat-app',
      */
     _changeUsername () {
       this._usernameComp.classList.remove('hidden')
+    }
+
+    /**
+     *
+     */
+    async _handleClickPosition () {
+      navigator.geolocation.getCurrentPosition(async position => {
+        console.log(position)
+        const result = await this._getCityAndCountry(position)
+        const myPosition = `My location is ${result.city}, ${result.country}`
+        console.log(myPosition)
+        if (result.city === undefined || result.country === undefined) {
+          console.error('too many location request')
+        } else {
+          this._connect()
+          // the data to send
+          const data = {
+            type: 'message',
+            data: myPosition,
+            username: localStorage.getItem('chat_app_username'),
+            channel: 'my, not so secret, channel',
+            key: 'eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd',
+            userIdentifier: this._randomId
+          }
+          this._webSocket.send(JSON.stringify(data))
+        }
+        // connect to websocket
+      }, err => {
+        console.log(err)
+      }, { timeout: 5000, enableHighAccuracy: true })
+    }
+
+    /**
+     * Reverse Geocode through convert the latitude and longitude to the address.
+     *
+     * @param {object} position - the object containing the latitude and longitude.
+     * @returns {Promise<object>} A Promise that resolves to a JavaScript object.
+     */
+    async _getCityAndCountry (position) {
+      try {
+        const apiURL = `https://geocode.xyz/${position.coords.latitude},${position.coords.longitude}?json=1`
+        const response = await fetch(apiURL)
+        const result = await response.json()
+        return result
+      } catch (e) {
+        console.log('Too many request')
+      }
     }
   })
