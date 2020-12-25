@@ -56,7 +56,9 @@ customElements.define('my-nickname',
     }
 
     /**
+     * Attributes to monitor for changes.
      *
+     * @returns {string[]} A string array of attributes to monitor.
      */
     static get observedAttributes () {
       return ['username']

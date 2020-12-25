@@ -6,8 +6,16 @@
   "background_color":"white",
    "description": "A PWD APP",
    "icons":[{
-     "src":"images/desktop256.png",
-     "sizes": "256x256",
+     "src":"images/desktop512.png",
+     "sizes": "512x512",
      "type": "image/png"
-   }]
+   },{
+    "src":"images/desktop256.png",
+    "sizes": "256x256",
+    "type": "image/png"
+  },{
+    "src":"images/desktop128.png",
+    "sizes": "128x128",
+    "type": "image/png"
+  }]
 }
