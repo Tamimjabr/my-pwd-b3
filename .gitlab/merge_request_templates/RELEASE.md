@@ -53,8 +53,8 @@ You check a checkbox by adding an "x" in the parentheses.
 | #12        | ✅       |                      |
 | #13        | ✅       |                      |
 | #14        | ✅       |                      |
-| #15        |          |                      |
-| #16        |          |                      |
+| #15        | ✅       |                      |
+| #16        | ✅       |                      |
 | #17        | ✅       |                      |
 | #18        | ✅       |                      |
 | #19        | ✅       |My custom sub-app     |
