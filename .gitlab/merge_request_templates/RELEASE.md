@@ -57,6 +57,7 @@ You check a checkbox by adding an "x" in the parentheses.
 | #16        |          |                      |
 | #17        | ✅       |                      |
 | #18        | ✅       |                      |
+| #19        | ✅       |My custom sub-app     |
 
 ### Student defined requirements
 
