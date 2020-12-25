@@ -81,6 +81,13 @@ template.innerHTML = `
       align-items: center;
       clear: both;
     }
+    #notConnectedMessage{
+      background-color: white;
+      position:sticky;
+      left:0;
+      bottom:40px;
+      width:100%; 
+    }
     textarea{
       height:30px;
       width:90%; 
@@ -123,6 +130,7 @@ template.innerHTML = `
     <button id='changeNameBtn'>Change nickname</button>
     <div id='messagesArea'>
     </div>
+    <small id='notConnectedMessage' class='hide'>You will be able to send messages again as soon as you are connected to the server!</small>
     <div id='submitArea'>
         <div id='emojiContainer' class='hide'>
          <button class='emoji'>😂</button>
@@ -151,7 +159,6 @@ template.innerHTML = `
         <textarea id='typeArea' placeholder="Type your message here"></textarea>
         <button id='submitBtn'>📤</button>
       </div>
-      <small id='notConnectedMessage' class='hide'>You will be able to send messages again as soon as you are connected to the server!</small>
   </div>
 `
 
