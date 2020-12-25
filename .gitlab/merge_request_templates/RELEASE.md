@@ -69,6 +69,8 @@ You check a checkbox by adding an "x" in the parentheses.
 | Issue ID   | Comment              |
 |------------|----------------------|
 | #19        |My custom sub-app     |
+| #20        |  Installabe          |
+| #21        |Offline support       |
 
 ## Assignment report
 
