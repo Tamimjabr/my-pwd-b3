@@ -41,7 +41,7 @@ You check a checkbox by adding an "x" in the parentheses.
 | #5         | ✅       |                      |
 | #6         | ✅       |                      |
 | #7         | ✅       |                      |
-| #8         | ✅       |                      |
+| #8         | ✅       |     timer            |
 | #9         | ✅       |                      |
 | #10        | ✅       |                      |
 | #11        | ✅       |                      |
