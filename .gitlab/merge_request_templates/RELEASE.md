@@ -43,7 +43,7 @@ You check a checkbox by adding an "x" in the parentheses.
 | #7         | ✅       |                      |
 | #8         | ✅       |     timer            |
 | #9         | ✅       |                      |
-| #10        | ✅       |                      |
+| #10        | ✅       | Emojis + Location button|
 | #11        | ✅       |                      |
 
 ### Non Functional Requirements
@@ -57,7 +57,7 @@ You check a checkbox by adding an "x" in the parentheses.
 | #16        | ✅       |                      |
 | #17        | ✅       |                      |
 | #18        | ✅       |                      |
-| #19        | ✅       |My custom sub-app     |
+
 
 ### Student defined requirements
 
@@ -68,7 +68,7 @@ You check a checkbox by adding an "x" in the parentheses.
 
 | Issue ID   | Comment              |
 |------------|----------------------|
-| #X         |                      |
+| #19        |My custom sub-app     |
 
 ## Assignment report
 
