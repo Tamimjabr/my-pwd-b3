@@ -39,7 +39,7 @@ template.innerHTML = `
     }
     #messagesArea{
       background:#f0e2d0;
-      min-height:440px;
+      height:440px;
       overflow: auto;
     }
     #messagesArea div{
@@ -178,14 +178,17 @@ customElements.define('my-chat-app',
 
       // Attach a shadow DOM tree to this element and
       // append the template to the shadow root.
-      this.attachShadow({ mode: 'open' })
-        .appendChild(template.content.cloneNode(true))
+      this.attachShadow({ mode: 'open' }).appendChild(
+        template.content.cloneNode(true)
+      )
       this._usernameComp = this.shadowRoot.querySelector('#username')
       this._changeNameBtn = this.shadowRoot.querySelector('#changeNameBtn')
       this._typeArea = this.shadowRoot.querySelector('#typeArea')
       this._submitBtn = this.shadowRoot.querySelector('#submitBtn')
       this._messagesArea = this.shadowRoot.querySelector('#messagesArea')
-      this._notConnectedMessage = this.shadowRoot.querySelector('#notConnectedMessage')
+      this._notConnectedMessage = this.shadowRoot.querySelector(
+        '#notConnectedMessage'
+      )
       this._emojiBtn = this.shadowRoot.querySelector('#emojiBtn')
       this._emojiContainer = this.shadowRoot.querySelector('#emojiContainer')
       this._emojis = this.shadowRoot.querySelectorAll('.emoji')
@@ -203,12 +206,21 @@ customElements.define('my-chat-app',
       this._connect()
       this._typeArea.addEventListener('keydown', this._sendMessage.bind(this))
       this._submitBtn.addEventListener('click', this._sendMessage.bind(this))
-      this._changeNameBtn.addEventListener('click', this._changeUsername.bind(this))
-      this._positionBtn.addEventListener('click', this._handleClickPosition.bind(this))
+      this._changeNameBtn.addEventListener(
+        'click',
+        this._changeUsername.bind(this)
+      )
+      this._positionBtn.addEventListener(
+        'click',
+        this._handleClickPosition.bind(this)
+      )
       // random a number between 0 and 100
       this._randomId = Math.floor(Math.random() * (100 - 0 + 1)) + 0
-      this._emojiBtn.addEventListener('click', this._toggleShowEmojis.bind(this))
-      Array.from(this._emojis).map(emoji => {
+      this._emojiBtn.addEventListener(
+        'click',
+        this._toggleShowEmojis.bind(this)
+      )
+      Array.from(this._emojis).map((emoji) => {
         return emoji.addEventListener('click', this._enterEmoji.bind(this))
       })
     }
@@ -224,8 +236,11 @@ customElements.define('my-chat-app',
       this._changeNameBtn.removeEventListener('click', this._changeUsername)
       this._positionBtn.removeEventListener('click', this._handleClickPosition)
 
-      this._emojiBtn.removeEventListener('click', this._toggleShowEmojis.bind(this))
-      Array.from(this._emojis).map(emoji => {
+      this._emojiBtn.removeEventListener(
+        'click',
+        this._toggleShowEmojis.bind(this)
+      )
+      Array.from(this._emojis).map((emoji) => {
         return emoji.removeEventListener('click', this._enterEmoji)
       })
 
@@ -241,10 +256,15 @@ customElements.define('my-chat-app',
       if (this._webSocket && this._webSocket.readyState === 1) {
         console.log('a websocket is already existed')
       } else {
-        this._webSocket = await new WebSocket('wss://cscloud6-127.lnu.se/socket/')
+        this._webSocket = await new WebSocket(
+          'wss://cscloud6-127.lnu.se/socket/'
+        )
 
         // make sure that we are connected before sending or recieving messages or
-        this._webSocket.addEventListener('open', this._listenToMessages.bind(this))
+        this._webSocket.addEventListener(
+          'open',
+          this._listenToMessages.bind(this)
+        )
         this._webSocket.addEventListener('error', this._handleError.bind(this))
         console.log('creating a new one')
       }
@@ -264,7 +284,7 @@ customElements.define('my-chat-app',
         // try to connect if not connected
         this._connect()
         if (this._typeArea.value !== '') {
-        // the data to send
+          // the data to send
           const data = {
             type: 'message',
             data: this._typeArea.value,
@@ -322,8 +342,13 @@ customElements.define('my-chat-app',
      * Listen to messages when connecting to the server using websocket.
      */
     _listenToMessages () {
-      console.log('You are connected to the server using websocket!, now you can send and recieve messages.')
-      this._webSocket.addEventListener('message', this._displayReceivedMessage.bind(this))
+      console.log(
+        'You are connected to the server using websocket!, now you can send and recieve messages.'
+      )
+      this._webSocket.addEventListener(
+        'message',
+        this._displayReceivedMessage.bind(this)
+      )
       // todo to check when implementing PWA
       this._notConnectedMessage.classList.add('hide')
       this._typeArea.removeAttribute('disabled')
@@ -336,10 +361,10 @@ customElements.define('my-chat-app',
       console.error('Faild connecting to the server using websocket!,try to connect in 10sec')
       this._notConnectedMessage.classList.remove('hide')
       this._typeArea.setAttribute('disabled', '')
-      // when we are offline or an error occured while connecting to the server try to connect to the server every 10sec
+      // when we are offline or an error occured while connecting to the server try to connect to the server every 5sec
       this._timeoutId = setTimeout(() => {
         this._connect()
-      }, 10000)
+      }, 5000)
     }
 
     /**
@@ -372,28 +397,32 @@ customElements.define('my-chat-app',
      *
      */
     async _handleClickPosition () {
-      navigator.geolocation.getCurrentPosition(async position => {
-        const result = await this._getCityAndCountry(position)
-        const myPosition = `My location is ${result.city}, ${result.country}`
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const result = await this._getCityAndCountry(position)
+          const myPosition = `My location is ${result.city}, ${result.country}`
 
-        if (result.city === undefined || result.country === undefined) {
-          console.error('too many location request')
-        } else {
-          this._connect()
-          // the data to send
-          const data = {
-            type: 'message',
-            data: myPosition,
-            username: localStorage.getItem('chat_app_username'),
-            channel: 'my, not so secret, channel',
-            key: 'eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd',
-            userIdentifier: this._randomId
+          if (result.city === undefined || result.country === undefined) {
+            console.error('too many location request')
+          } else {
+            this._connect()
+            // the data to send
+            const data = {
+              type: 'message',
+              data: myPosition,
+              username: localStorage.getItem('chat_app_username'),
+              channel: 'my, not so secret, channel',
+              key: 'eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd',
+              userIdentifier: this._randomId
+            }
+            this._webSocket.send(JSON.stringify(data))
           }
-          this._webSocket.send(JSON.stringify(data))
-        }
-      }, err => {
-        console.log(err)
-      }, { timeout: 5000, enableHighAccuracy: true })
+        },
+        (err) => {
+          console.log(err)
+        },
+        { timeout: 5000, enableHighAccuracy: true }
+      )
     }
 
     /**
@@ -412,4 +441,5 @@ customElements.define('my-chat-app',
         console.log('Too many request')
       }
     }
-  })
+  }
+)

@@ -17,15 +17,6 @@ template.innerHTML = `
     position:relative;
     perspective: 1000px;
   }
-  /*because the host is getting the attribut not the button
-  on face-up show the front and hide the back of the tile*/
-  /*
-  :host([face-up]) #front{
-    display: inline-block;
-  }
-  :host([face-up]) #back{
-    display: none;
-  }*/
   :host([face-up]) #tile {
       transform: rotateY(180deg);
   }

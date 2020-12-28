@@ -19,7 +19,7 @@ template.innerHTML = `
   width: 350px;
   height: 500px;
   border: 2px solid balck;
-  border-radius: 5px;
+  border-radius: 7px;
   background-color: rgb(241, 202, 165);
   resize: both;
   overflow: auto;
