@@ -9,13 +9,12 @@
  * Define template.
  */
 
-import src from './sounds/bling.mp3'
 import moment from 'moment'
 
 moment.locale('sv')
-
+const audioURL = (new URL('sounds/bling.mp3', import.meta.url)).href
 const messageSound = document.createElement('audio')
-messageSound.src = src
+messageSound.src = audioURL
 
 const template = document.createElement('template')
 template.innerHTML = `
@@ -326,7 +325,7 @@ customElements.define('my-chat-app',
         } else {
           // add a sound when getting messages.
           //! remove comment to activate
-          // messageSound.play()
+          messageSound.play()
         }
         message.textContent = data.username + ' : ' + data.data
         messageContainer.appendChild(message)

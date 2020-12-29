@@ -68,7 +68,6 @@ template.innerHTML = `
     }
   </style>
   <div id='desktop'>
-   <my-window-com><my-chat-app></my-chat-app></my-window-com>
    <div id='desktopBar'>
    <button id="memoryBtn">🧠</button>
    <button id="chattBtn">💬</button>
