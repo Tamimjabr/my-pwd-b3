@@ -13,16 +13,16 @@ self.addEventListener('install', event => {
     return cache.addAll([
       'index.html',
       'css/styles.css',
-      '/js/index.js',
-      '/js/components/my-memory-game/images/0.png',
-      '/js/components/my-memory-game/images/1.png',
-      '/js/components/my-memory-game/images/2.png',
-      '/js/components/my-memory-game/images/3.png',
-      '/js/components/my-memory-game/images/4.png',
-      '/js/components/my-memory-game/images/5.png',
-      '/js/components/my-memory-game/images/6.png',
-      '/js/components/my-memory-game/images/7.png',
-      '/js/components/my-memory-game/images/8.png'
+      'js/index.js',
+      'js/components/my-memory-game/images/0.png',
+      'js/components/my-memory-game/images/1.png',
+      'js/components/my-memory-game/images/2.png',
+      'js/components/my-memory-game/images/3.png',
+      'js/components/my-memory-game/images/4.png',
+      'js/components/my-memory-game/images/5.png',
+      'js/components/my-memory-game/images/6.png',
+      'js/components/my-memory-game/images/7.png',
+      'js/components/my-memory-game/images/8.png'
     ])
   }
   // wait until adding the files to the cache
