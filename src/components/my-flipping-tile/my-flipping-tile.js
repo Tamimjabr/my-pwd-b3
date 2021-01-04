@@ -71,10 +71,10 @@ template.innerHTML = `
     }
     
     #front {
-      background-color:#fff;
+    background-color:#f8c582;
     /*  display: none;*/
     /* flipping */
-     transform: rotateY(180deg)
+    transform: rotateY(180deg)
     }
     #back {
       background:#ffe001 url("${IMG_URL}");
@@ -91,12 +91,13 @@ template.innerHTML = `
       align-items:center;
     }
     slot>* {
-        max-width: 80%;
-        max-height: 80%;
+      max-width: 80%;
+      max-height: 80%;
     }
     ::slotted(img) {
-        max-width: 80%;
-        max-height: 80%;
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: 5px;
     }
 </style>
 <button part='tile-main' id='tile'>

@@ -10,12 +10,23 @@ import '../my-flipping-tile'
 /*
  * Get image URLs.
  */
+/*
+0.Photo by Jon Tyson on Unsplash
+1.Photo by Owen Beard on Unsplash
+2.Photo by Jason Leung on Unsplash
+3.Photo by Everyday basics on Unsplash
+4.Photo by Lyman Gerona on Unsplash
+5.Photo by Erik Mclean on Unsplash
+6.Photo by Cody Board on Unsplash
+7.Photo by Andrew Wulf on Unsplash
+8.Photo by Rosie Kerr on Unsplash
+*/
 const NUMBER_OF_IMAGES = 9
 
 // an array with 9 elements, urls
 const IMG_URLS = new Array(NUMBER_OF_IMAGES)
 for (let i = 0; i < NUMBER_OF_IMAGES; i++) {
-  IMG_URLS[i] = (new URL(`images/${i}.png`, import.meta.url)).href
+  IMG_URLS[i] = (new URL(`images/${i}.jpg`, import.meta.url)).href
 }
 
 /*
@@ -43,6 +54,7 @@ template.innerHTML = `
     my-flipping-tile::part(tile-back) {
     border-width: 5px;
     background-image: url("${IMG_URLS[0]}");
+    background-size: cover;
     background-repeat: no-repeat;
     background-position: center/80%;
     background-color:  rgb(233, 210, 109);
