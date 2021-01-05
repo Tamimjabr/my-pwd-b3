@@ -46,7 +46,7 @@ template.innerHTML = `
       left: 50px;
     }
     my-window-com:focus{
-     z-index:200;
+    z-index:200;
     }
     button{
       height: 100%;
@@ -68,16 +68,15 @@ template.innerHTML = `
     }
   </style>
   <div id='desktop'>
-   <div id='desktopBar'>
-   <button id="memoryBtn">🧠</button>
-   <button id="chattBtn">💬</button>
-   <button id="TicBtn">❌⭕</button>
-   <div id='timeDiv'>
-    <time id='time'></time>
-    <time id='date'></time>
-   </div>
-  
-   </div>
+    <div id='desktopBar'>
+     <button id="memoryBtn">🧠</button>
+     <button id="chattBtn">💬</button>
+     <button id="TicBtn">❌⭕</button>
+     <div id='timeDiv'>
+      <time id='time'></time>
+      <time id='date'></time>
+     </div>
+    </div>
   </div>
 `
 
@@ -140,10 +139,7 @@ customElements.define('my-pwd-com',
      * @param {string} component - the type of the component to create inside the window.
      */
     _createWindow (component) {
-      // todo let the that take a paramater with the element name
-
       const myWindows = Array.from(this.shadowRoot.querySelectorAll('my-window-com'))
-      console.log(myWindows.length)
       // if there is no window in the desktop so start adding new ones from
       if (myWindows.length === 0) {
         this._top = 50
@@ -151,10 +147,11 @@ customElements.define('my-pwd-com',
       }
       const componentElement = document.createElement(component)
       const myWindow = document.createElement('my-window-com')
+      // prevent creating windows exakt on eachother
       myWindow.style.top = (this._top + 10) + 'px'
       myWindow.style.left = (this._left + 10) + 'px'
       myWindow.style.zIndex = this._topWindowZ
-      // todo to remove the event listner, maybe in my-window-com in disconnectedCallback
+
       myWindow.addEventListener('click', this._handleFocus.bind(this))
 
       myWindow.appendChild(componentElement)

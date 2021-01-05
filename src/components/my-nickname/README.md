@@ -1,6 +1,5 @@
 # &lt;my-nickname&gt;
-A webcomponent that enable the user to choose a nickname to do the quiz with, the nickname will
-be reused between attempts until the user choose to change it.
+A webcomponent that enable the user to choose a nickname (to use for chat app in our case), the nickname will be reused between sessions and will be stored in the localStorage in the browser until the user choose to change it.
 
 ## Attributes
 
@@ -8,11 +7,6 @@ be reused between attempts until the user choose to change it.
 An attribute that represent the user nickname in the quiz.
 
 Default value: ''
-
-### `changer`
-An attribute; that, if specified means the component will show the input field to enable the user to change nickname between attempts.
-
-Default value: false
 
 ## Styling with CSS
 The submit input (button) is styleable using the part `nickNameBtn`

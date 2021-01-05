@@ -23,7 +23,7 @@ import '../my-flipping-tile'
 */
 const NUMBER_OF_IMAGES = 9
 
-// an array with 9 elements, urls
+// an array with 9 elements' urls
 const IMG_URLS = new Array(NUMBER_OF_IMAGES)
 for (let i = 0; i < NUMBER_OF_IMAGES; i++) {
   IMG_URLS[i] = (new URL(`images/${i}.jpg`, import.meta.url)).href
@@ -327,9 +327,7 @@ customElements.define('my-memory-game',
       // get indexes from 0 to 15 [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
       const indexes = [...Array(tilesCount).keys()]
 
-      console.log(indexes)
       // shuffle the indexes ex. [4, 12, 8, 5, 7, 14, 15, 10, 6, 13, 3, 0, 11, 1, 9, 2]
-
       for (let i = indexes.length - 1; i > 0; i--) {
         // random a number between 0 and i
         const j = Math.floor(Math.random() * (i + 1))
@@ -337,15 +335,12 @@ customElements.define('my-memory-game',
         indexes[j] = indexes[i]
         indexes[i] = temp
       }
-      console.log(indexes)
 
       this._tiles.all.forEach((tile, index) => {
-        // ! % is the rest value not division , ex 3%8+1= 4 because 3%8 =3
-        // debugging const fi = indexes[index] % (tilesCount / 2) + 1
+        // % is the rest value not division , ex 3%8+1= 4 because 3%8 =3
       // console.log(indexes[index],(tilesCount / 2))
         tile.querySelector('img').setAttribute('src', IMG_URLS[indexes[index] % (tilesCount / 2) + 1])
         // [indexes[index]%(this._tiles/2)+1] result twins of numbers between 1 and 8
-        // todo check if necessary
         tile.faceUp = tile.disabled = tile.hidden = false
       })
     }
@@ -358,12 +353,12 @@ customElements.define('my-memory-game',
     _onTileFlip (event) {
       const tiles = this._tiles
       const tilesToDisable = Array.from(tiles.faceUp)
-      console.log(tilesToDisable)
+
       // if there is more than one tile open, disable all other cards to prevent opening 3 cards
       if (tilesToDisable.length > 1) {
         tilesToDisable.push(...tiles.faceDown)
       }
-      console.log(tilesToDisable)
+
       tilesToDisable.forEach(tile => tile.setAttribute('disabled', ''))
       const [first, second, ...tilesToEnable] = tilesToDisable
 
@@ -390,7 +385,7 @@ customElements.define('my-memory-game',
           // check if it was the last one and all tiles are hidden
           if (tiles.all.every(tile => tile.hidden)) {
             tiles.all.forEach(tile => (tile.disabled = true))
-            //! the game is over
+            // the game is over
             this.dispatchEvent(new CustomEvent('gameover', {
               bubbles: true
             }))
@@ -459,7 +454,6 @@ customElements.define('my-memory-game',
       this._scoreBoard.textContent = ''
       const tiles = this._tiles
       const tilesToEnable = Array.from(tiles.all)
-      console.log(tilesToEnable)
       tilesToEnable.forEach(tile => {
         tile.removeAttribute('disabled')
         tile.removeAttribute('face-up')

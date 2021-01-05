@@ -1,7 +1,9 @@
 const version = '1.0.0'
 
+// I comment the console.log here and don't remove them to debugg SW easily in the future.
+
 self.addEventListener('install', event => {
-  console.log('ServiceWorker: Installed version', version)
+  // console.log('ServiceWorker: Installed version', version)
   /**
    * Cache assets when installing the service worker.
    *
@@ -9,7 +11,8 @@ self.addEventListener('install', event => {
    */
   const casheAssests = async () => {
     const cache = await self.caches.open(version)
-    console.log('ServiceWorker:Caching Files')
+    // console.log('ServiceWorker:Caching Files')
+    // caching the images for the memory game to enable playing the game offline even if the user didn't do that online.
     return cache.addAll([
       'index.html',
       'css/styles.css',
@@ -30,7 +33,7 @@ self.addEventListener('install', event => {
 })
 
 self.addEventListener('activate', event => {
-  console.log('ServiceWorker: Activated', version)
+  // console.log('ServiceWorker: Activated', version)
   /**
    * Delete old cache when changing the version.
    *
@@ -54,8 +57,8 @@ self.addEventListener('activate', event => {
 })
 
 self.addEventListener('fetch', event => {
-  console.log('ServiceWorker: Fetching')
-  console.log(event.request)
+  // console.log('ServiceWorker: Fetching')
+  // console.log(event.request)
   /**
    * Cache the requested resources and when failing fetching from server, serve the resources from cache.
    *
@@ -72,7 +75,7 @@ self.addEventListener('fetch', event => {
       cache.put(request, response.clone())
       return response
     } catch (error) {
-      console.info('ServiceWorker: Serving cached result')
+      // console.info('ServiceWorker: Serving cached result')
       return caches.match(request)
     }
   }

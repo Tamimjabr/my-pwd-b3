@@ -16,6 +16,7 @@ Default value: large
 | `tilesmatch`    | The tiles facing up match.        |
 | `tilesmismatch` | The tiles facing up do not match. |
 | `gameover`      | The game is over.                 |
+| `dragstart`     | Dragging the tiles                |
 
 ## Examples
 

@@ -191,7 +191,7 @@ customElements.define(
      */
     _onClick (event) {
       // Flip if main button, no other button and key pressed.
-      //! event.buttons means that the only primary button is pressed so the value is 1
+      // event.button < 2 means that the only primary button is pressed so the value is 1
 
       if (
         (event.button === 0 &&

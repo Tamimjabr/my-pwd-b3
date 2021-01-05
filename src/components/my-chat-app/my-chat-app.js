@@ -11,6 +11,7 @@
 
 import moment from 'moment'
 
+// get the local time for Sweden
 moment.locale('sv')
 const audioURL = (new URL('sounds/bling.mp3', import.meta.url)).href
 const messageSound = document.createElement('audio')
@@ -253,7 +254,7 @@ customElements.define('my-chat-app',
     async _connect () {
       // check if we already have a webSocket connection before creating a new one
       if (this._webSocket && this._webSocket.readyState === 1) {
-        console.log('a websocket is already existed')
+        // console.log('a websocket is already existed')
       } else {
         this._webSocket = await new WebSocket(
           'wss://cscloud6-127.lnu.se/socket/'
@@ -311,7 +312,6 @@ customElements.define('my-chat-app',
         console.log(`${event.type}, holding the connectiong through websocket`)
       } else if (event.type === 'message') {
         const data = JSON.parse(event.data)
-        // todo check if the data.type is message and not heartbeat
         const fragment = document.createDocumentFragment()
         const messageContainer = document.createElement('div')
         const message = document.createElement('p')
@@ -341,14 +341,11 @@ customElements.define('my-chat-app',
      * Listen to messages when connecting to the server using websocket.
      */
     _listenToMessages () {
-      console.log(
-        'You are connected to the server using websocket!, now you can send and recieve messages.'
-      )
+      //  console.log('You are connected to the server using websocket!, now you can send and recieve messages.')
       this._webSocket.addEventListener(
         'message',
         this._displayReceivedMessage.bind(this)
       )
-      // todo to check when implementing PWA
       this._notConnectedMessage.classList.add('hide')
       this._typeArea.removeAttribute('disabled')
     }
