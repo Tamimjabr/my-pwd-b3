@@ -13,9 +13,6 @@ import moment from 'moment'
 
 // get the local time for Sweden
 moment.locale('sv')
-const audioURL = (new URL('sounds/bling.mp3', import.meta.url)).href
-const messageSound = document.createElement('audio')
-messageSound.src = audioURL
 
 const template = document.createElement('template')
 template.innerHTML = `
@@ -266,7 +263,7 @@ customElements.define('my-chat-app',
           this._listenToMessages.bind(this)
         )
         this._webSocket.addEventListener('error', this._handleError.bind(this))
-        console.log('creating a new one')
+        console.log('creating a new WebSocket connection')
       }
     }
 
@@ -322,10 +319,6 @@ customElements.define('my-chat-app',
           data.username = 'You'
           message.style.color = 'green'
           messageContainer.style.textAlign = 'right'
-        } else {
-          // add a sound when getting messages.
-          //! remove comment to activate
-          messageSound.play()
         }
         message.textContent = data.username + ' : ' + data.data
         messageContainer.appendChild(message)

@@ -72,7 +72,7 @@ self.addEventListener('fetch', event => {
 
       // save the result in the cache
       const cache = await caches.open(version)
-      cache.put(request, response.clone())
+      await cache.put(request, response.clone())
       return response
     } catch (error) {
       // console.info('ServiceWorker: Serving cached result')

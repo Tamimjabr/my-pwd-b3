@@ -26,7 +26,7 @@ form > input:focus{
 }
 </style>
 <form>
-    <input type="text" id="textName" placeholder="Type your nickname" autofocus required>
+    <input type="text" id="textName" placeholder="Type your nickname" required>
     <input type="submit" value="Submit" part='nickNameBtn'>
 </form>
 `
