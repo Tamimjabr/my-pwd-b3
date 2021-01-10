@@ -7,6 +7,9 @@
 
 import moment from 'moment'
 
+// Icons are taken from emojipedia https://emojipedia.org
+// "Emojipedia permits using our original sample images under the usual fair use provisions".
+
 moment.locale('sv')
 // Photo by RetroSupply on Unsplash
 const backgroundURL = (new URL('images/background.jpg', import.meta.url)).href

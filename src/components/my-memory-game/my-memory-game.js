@@ -496,7 +496,6 @@ customElements.define('my-memory-game',
       this._timeoutId = setTimeout(() => {
         this._count++
         this._timer.textContent = 'Total time: ' + this._count
-
         this._countDown()
       }, 1000)
     }

@@ -11,6 +11,9 @@
 
 import moment from 'moment'
 
+// emojis in the chatapp are taken from emojipedia https://emojipedia.org
+// "Emojipedia permits using our original sample images under the usual fair use provisions".
+
 // get the local time for Sweden
 moment.locale('sv')
 
@@ -347,7 +350,7 @@ customElements.define('my-chat-app',
      * Handle errors related to websocket.
      */
     _handleError () {
-      console.error('Faild connecting to the server using websocket!,try to connect in 10sec')
+      console.error('Faild connecting to the server using websocket!,try to connect in 5sec')
       this._notConnectedMessage.classList.remove('hide')
       this._typeArea.setAttribute('disabled', '')
       // when we are offline or an error occured while connecting to the server try to connect to the server every 5sec
