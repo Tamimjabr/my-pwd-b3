@@ -1,6 +1,6 @@
 const version = '1.0.0'
 
-// I comment the console.log here and don't remove them to debugg SW easily in the future.
+//* I comment the console.log here and don't remove them to debugg SW easily in the future.
 
 self.addEventListener('install', event => {
   // console.log('ServiceWorker: Installed version', version)

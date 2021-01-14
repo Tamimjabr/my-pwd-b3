@@ -8,7 +8,7 @@
 /**
  * Define template.
  */
-
+import '../my-nickname'
 import moment from 'moment'
 
 // emojis in the chatapp are taken from emojipedia https://emojipedia.org

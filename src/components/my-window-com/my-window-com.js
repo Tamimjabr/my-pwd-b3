@@ -5,7 +5,7 @@
  * @version 1.0.0
  */
 
-import { dragElement } from './make-things-draggable.js'
+import { dragElement } from './lib/make-things-draggable.js'
 
 /**
  * Define template.
